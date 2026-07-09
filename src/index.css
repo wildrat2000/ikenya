@@ -105,6 +105,18 @@
 }
 .animate-float { animation: float 3s ease-in-out infinite; }
 
+@keyframes fly-in-right {
+  0% { opacity: 0; transform: translateX(100%); }
+  100% { opacity: 1; transform: translateX(0); }
+}
+.animate-fly-in-right { animation: fly-in-right 0.5s ease-out forwards; }
+
+@keyframes fly-out-right {
+  0% { opacity: 1; transform: translateX(0); }
+  100% { opacity: 0; transform: translateX(100%); }
+}
+.animate-fly-out-right { animation: fly-out-right 0.3s ease-in forwards; }
+
 .markdown-editor {
   @apply font-mono text-base leading-relaxed;
 }
