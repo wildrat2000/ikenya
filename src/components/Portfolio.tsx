@@ -1,20 +1,29 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { X, ArrowRight, Target, Lightbulb, TrendingUp } from 'lucide-react';
-import { PORTFOLIO, Project } from '@/data/site';
+import { supabase } from '@/lib/supabase';
+import { PORTFOLIO as FALLBACK, Project } from '@/data/site';
 
 const ALL = 'All';
 
 const Portfolio: React.FC = () => {
+  const [portfolio, setPortfolio] = useState<Project[]>(FALLBACK);
   const [active, setActive] = useState<Project | null>(null);
   const [sector, setSector] = useState<string>(ALL);
   const [service, setService] = useState<string>(ALL);
 
-  const sectors = useMemo(() => [ALL, ...Array.from(new Set(PORTFOLIO.map((p) => p.sector)))], []);
-  const services = useMemo(() => [ALL, ...Array.from(new Set(PORTFOLIO.map((p) => p.serviceType)))], []);
+  useEffect(() => {
+    supabase.from('page_content').select('content').eq('page', 'portfolio').eq('section', 'portfolio_list').single()
+      .then(({ data }) => {
+        if (data?.content) setPortfolio(data.content as Project[]);
+      });
+  }, []);
+
+  const sectors = useMemo(() => [ALL, ...Array.from(new Set(portfolio.map((p) => p.sector)))], [portfolio]);
+  const services = useMemo(() => [ALL, ...Array.from(new Set(portfolio.map((p) => p.serviceType)))], [portfolio]);
 
   const filtered = useMemo(
     () =>
-      PORTFOLIO.filter(
+      portfolio.filter(
         (p) => (sector === ALL || p.sector === sector) && (service === ALL || p.serviceType === service)
       ),
     [sector, service]
@@ -25,9 +34,9 @@ const Portfolio: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="text-center max-w-2xl mx-auto">
           <span className="text-[#4a90e2] font-semibold uppercase tracking-wider text-sm">Portfolio</span>
-          <h2 className="mt-3 text-3xl lg:text-4xl font-extrabold text-[#1a1f3a]">
+          <h1 className="mt-3 text-3xl lg:text-4xl font-extrabold text-[#1a1f3a]">
             Proof of delivered work
-          </h2>
+          </h1>
           <p className="mt-4 text-slate-600">
             Real projects across sectors—filter by sector or service type to see how we solve challenges and
             deliver measurable results.
@@ -55,6 +64,7 @@ const Portfolio: React.FC = () => {
                   <img
                     src={p.img}
                     alt={p.title}
+                    loading="lazy"
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
                 </div>
@@ -127,7 +137,7 @@ const ProjectModal: React.FC<{ project: Project; onClose: () => void }> = ({ pro
         </button>
 
         <div className="aspect-[16/9] overflow-hidden rounded-t-2xl">
-          <img src={project.img} alt={project.title} className="w-full h-full object-cover" />
+          <img src={project.img} alt={project.title} loading="lazy" className="w-full h-full object-cover" />
         </div>
 
         <div className="p-7">

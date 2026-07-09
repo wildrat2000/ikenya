@@ -1,9 +1,12 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { COMPANY, SERVICES } from '@/data/site';
 import { Mail, Phone, MapPin } from 'lucide-react';
 
 const Footer: React.FC = () => {
+  const navigate = useNavigate();
   const go = (id: string) => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+  const goHome = (id: string) => { navigate('/'); setTimeout(() => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' }), 100); };
 
   return (
     <footer className="bg-[#10142a] text-slate-300">
@@ -33,9 +36,9 @@ const Footer: React.FC = () => {
           <h4 className="text-white font-semibold mb-4">Company</h4>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-x-4 gap-y-2 text-sm">
             <button onClick={() => go('about')} className="hover:text-[#4a90e2] text-left">About Us</button>
-            <button onClick={() => go('sectors')} className="hover:text-[#4a90e2] text-left">Who We Serve</button>
+            <button onClick={() => go('services')} className="hover:text-[#4a90e2] text-left">Who We Serve</button>
             <button onClick={() => go('portfolio')} className="hover:text-[#4a90e2] text-left">Portfolio</button>
-            <button onClick={() => go('tech')} className="hover:text-[#4a90e2] text-left">Technology</button>
+            <button onClick={() => goHome('tech')} className="hover:text-[#4a90e2] text-left">Technology</button>
             <button onClick={() => go('contact')} className="hover:text-[#4a90e2] text-left">Contact</button>
           </div>
         </div>

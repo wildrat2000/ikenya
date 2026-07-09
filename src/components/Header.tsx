@@ -1,15 +1,13 @@
 import React from 'react';
 import { Menu, X } from 'lucide-react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { COMPANY } from '@/data/site';
 
 const links = [
   { label: 'Home', path: '/' },
-  { label: 'Services', path: '/services' },
-  { label: 'Sectors', path: '/sectors' },
-  { label: 'Portfolio', path: '/portfolio' },
   { label: 'About', path: '/about' },
-  { label: 'Technology', path: '/technology' },
+  { label: 'Services', path: '/services' },
+  { label: 'Portfolio', path: '/portfolio' },
   { label: 'Contact', path: '/contact' },
 ];
 
@@ -17,18 +15,12 @@ const Header: React.FC = () => {
   const [open, setOpen] = React.useState(false);
   const [scrolled, setScrolled] = React.useState(false);
   const location = useLocation();
-  const navigate = useNavigate();
 
   React.useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener('scroll', onScroll);
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
-
-  const go = (path: string) => {
-    setOpen(false);
-    navigate(path);
-  };
 
   return (
     <header
@@ -46,9 +38,9 @@ const Header: React.FC = () => {
 
         <nav className="hidden md:flex items-center gap-7">
           {links.map((l) => (
-            <button
+            <Link
               key={l.path}
-              onClick={() => go(l.path)}
+              to={l.path}
               className={`text-sm font-medium transition-colors ${
                 location.pathname === l.path
                   ? 'text-[#4a90e2]'
@@ -56,14 +48,14 @@ const Header: React.FC = () => {
               }`}
             >
               {l.label}
-            </button>
+            </Link>
           ))}
-          <button
-            onClick={() => go('/contact')}
+          <Link
+            to="/contact"
             className="bg-[#f39c12] hover:bg-[#e08e0b] text-white px-5 py-2.5 rounded-lg text-sm font-semibold transition-colors shadow"
           >
             Request Consult
-          </button>
+          </Link>
         </nav>
 
         <button className="md:hidden text-white" onClick={() => setOpen(!open)} aria-label="Menu">
@@ -72,25 +64,27 @@ const Header: React.FC = () => {
       </div>
 
       {open && (
-        <div className="md:hidden bg-[#1a1f3a] border-t border-white/10 px-4 py-4 space-y-2">
+        <nav className="md:hidden bg-[#1a1f3a] border-t border-white/10 px-4 py-4 space-y-2">
           {links.map((l) => (
-            <button
+            <Link
               key={l.path}
-              onClick={() => go(l.path)}
+              to={l.path}
+              onClick={() => setOpen(false)}
               className={`block w-full text-left py-2.5 font-medium ${
                 location.pathname === l.path ? 'text-[#4a90e2]' : 'text-slate-200'
               }`}
             >
               {l.label}
-            </button>
+            </Link>
           ))}
-          <button
-            onClick={() => go('/contact')}
-            className="w-full bg-[#f39c12] text-white px-5 py-3 rounded-lg font-semibold mt-2"
+          <Link
+            to="/contact"
+            onClick={() => setOpen(false)}
+            className="block w-full text-center bg-[#f39c12] text-white px-5 py-3 rounded-lg font-semibold mt-2"
           >
             Request Consult
-          </button>
-        </div>
+          </Link>
+        </nav>
       )}
     </header>
   );

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { supabase } from '@/lib/supabase';
-import { Loader2, LayoutDashboard, Calendar, MessageSquare, Users, LogOut, ChevronRight } from 'lucide-react';
+import { Loader2, LayoutDashboard, Calendar, MessageSquare, Users, Code2, Wrench, Briefcase, LogOut, ChevronRight } from 'lucide-react';
 
 
 const navItems = [
@@ -9,6 +9,9 @@ const navItems = [
   { label: 'Appointments', path: '/admin/appointments', icon: Calendar },
   { label: 'Contact Submissions', path: '/admin/contacts', icon: MessageSquare },
   { label: 'Subscribers', path: '/admin/subscribers', icon: Users },
+  { label: 'Services Content', path: '/admin/services', icon: Wrench },
+  { label: 'Portfolio Content', path: '/admin/portfolio', icon: Briefcase },
+  { label: 'Tech Content', path: '/admin/tech-content', icon: Code2 },
 ];
 
 const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {

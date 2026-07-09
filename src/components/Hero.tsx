@@ -1,22 +1,24 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ArrowRight, ShieldCheck, Zap, Wrench } from 'lucide-react';
 import { COMPANY, STATS } from '@/data/site';
 
 const Hero: React.FC = () => {
   const go = (id: string) => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+  const navigate = useNavigate();
 
   return (
     <section id="hero" className="min-h-screen flex items-center bg-[#1a1f3a]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-28 pb-16 w-full grid lg:grid-cols-2 gap-12 items-center">
         <div className="relative">
           <a
-            href="http://localhost:8081/"
+            href="https://itukarua3.vercel.app/"
             target="_blank"
             rel="noopener noreferrer"
             className="absolute -right-6 top-1/2 -translate-y-1/2 z-10 w-[170px] hover:scale-105 transition-transform"
           >
             <div className="relative rounded-xl overflow-hidden shadow-xl aspect-[4/5]">
-              <img src="/electrician.jpg" alt="" className="absolute inset-0 w-full h-full object-cover" />
+              <img src="/electrician.jpg" alt="" fetchpriority="high" className="absolute inset-0 w-full h-full object-cover" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
               <div className="absolute inset-0 flex flex-col justify-end p-3">
                 <span className="text-white text-sm font-bold leading-tight">Looking for a Hustle?</span>
@@ -42,7 +44,7 @@ const Hero: React.FC = () => {
               Get Started <ArrowRight size={18} />
             </button>
             <button
-              onClick={() => go('services')}
+              onClick={() => navigate('/services')}
               className="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 border border-white/20 text-white px-7 py-3.5 rounded-lg font-semibold transition-colors backdrop-blur"
             >
               View Services
@@ -57,7 +59,7 @@ const Hero: React.FC = () => {
         </div>
 
         <div className="flex flex-col gap-4">
-          <img src="/Homepage.png" alt="" className="w-full rounded-2xl object-cover" />
+          <img src="/Homepage.png" alt="" loading="lazy" className="w-full rounded-2xl object-cover" />
           <div className="grid grid-cols-4 gap-3">
             {STATS.map((s) => (
               <div

@@ -24,7 +24,7 @@ const values = [
 
 const About: React.FC = () => {
   return (
-    <section className="py-20 lg:py-28 bg-[#1a1f3a] text-white">
+    <section id="about" className="py-20 lg:py-28 bg-[#1a1f3a] text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
 
         <div className="grid lg:grid-cols-2 gap-14 items-center">
@@ -32,6 +32,7 @@ const About: React.FC = () => {
             <img
               src="/director.jpg"
               alt="Samuel Mbugua Wambaa – Director"
+              loading="lazy"
               className="w-full rounded-2xl object-cover max-h-[500px] ring-4 ring-[#4a90e2]/30 shadow-2xl"
             />
             <div className="absolute -bottom-4 -right-4 bg-gradient-to-r from-[#f39c12] to-[#e67e22] text-white px-5 py-3 rounded-xl shadow-lg flex items-center gap-3">
@@ -44,9 +45,9 @@ const About: React.FC = () => {
 
           <div>
             <span className="text-[#4a90e2] font-semibold uppercase tracking-wider text-sm">About Us</span>
-            <h2 className="mt-3 text-3xl lg:text-4xl font-extrabold leading-tight">
+            <h1 className="mt-3 text-3xl lg:text-4xl font-extrabold leading-tight">
               Director &amp; Lead Consultant
-            </h2>
+            </h1>
             <p className="mt-2 text-lg font-semibold text-slate-300">
               Samuel Mbugua Wambaa
             </p>

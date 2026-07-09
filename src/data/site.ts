@@ -1,6 +1,6 @@
 export const COMPANY = {
   name: 'Itukarua Kenya',
-  tagline: 'Your IT W@rehouse Solutions Hub',
+  tagline: 'Your IT Warehouse Solutions Hub',
   positioning:
     'Itukarua Kenya builds secure, modern websites and IT infrastructure that help organizations in Nairobi and across Kenya operate reliably and serve customers better.',
   founded: 2020,
@@ -21,7 +21,17 @@ export interface Service {
   desc: string;
   points: string[];
   icon: string;
+  img: string;
 }
+
+const SERVICE_IMAGES: Record<string, string> = {
+  web: 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=600&h=400&fit=crop',
+  hosting: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=600&h=400&fit=crop',
+  network: 'https://images.unsplash.com/photo-1614064641938-3bbee52942c7?w=600&h=400&fit=crop',
+  server: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=400&fit=crop',
+  software: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=600&h=400&fit=crop',
+  jobs: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=600&h=400&fit=crop',
+};
 
 export const SERVICES: Service[] = [
   {
@@ -30,6 +40,7 @@ export const SERVICES: Service[] = [
     desc: 'Fast, secure, and maintainable websites and web applications built with modern best practices.',
     points: ['React, Node.js & Vite', 'Python & WordPress', 'HTML / CSS & ongoing maintenance'],
     icon: 'code',
+    img: SERVICE_IMAGES.web,
   },
   {
     id: 'hosting',
@@ -37,6 +48,7 @@ export const SERVICES: Service[] = [
     desc: 'Practical guidance on domain strategy, hosting selection, setup, migrations, and renewals.',
     points: ['Domain strategy & setup', 'Hosting selection & migration', 'Renewals & support guidance'],
     icon: 'globe',
+    img: SERVICE_IMAGES.hosting,
   },
   {
     id: 'network',
@@ -44,6 +56,7 @@ export const SERVICES: Service[] = [
     desc: 'Planning, deployment, upgrades, and troubleshooting to keep your office network stable and fast.',
     points: ['Office networking & structured cabling', 'Router & firewall deployment', 'Optimization & troubleshooting'],
     icon: 'network',
+    img: SERVICE_IMAGES.network,
   },
   {
     id: 'server',
@@ -51,6 +64,7 @@ export const SERVICES: Service[] = [
     desc: 'HP server sales, support, and administration to keep teams productive with the right hardware.',
     points: ['HP server sales & supply', 'Setup & administration', 'Ongoing support'],
     icon: 'server',
+    img: SERVICE_IMAGES.server,
   },
   {
     id: 'software',
@@ -58,6 +72,7 @@ export const SERVICES: Service[] = [
     desc: 'Off-the-shelf and custom software products with practical, dependable ongoing support.',
     points: ['Custom software products', 'Off-the-shelf solutions', 'Maintenance & support'],
     icon: 'box',
+    img: SERVICE_IMAGES.software,
   },
   {
     id: 'jobs',
@@ -65,6 +80,7 @@ export const SERVICES: Service[] = [
     desc: 'Localized online jobs portal development and day-to-day operations support.',
     points: ['Portal development', 'Localized job listings', 'Operations support'],
     icon: 'briefcase',
+    img: SERVICE_IMAGES.jobs,
   },
 ];
 
@@ -103,7 +119,7 @@ export const SECTORS: Sector[] = [
   {
     title: 'Individuals',
     desc: 'Personal sites and reliable IT support for freelancers and professionals.',
-    img: 'https://d64gsuwffb70l.cloudfront.net/6a3bcc9db53d660313cad858_1782304153866_4260cebd.jpg',
+    img: '/og.png',
   },
 ];
 

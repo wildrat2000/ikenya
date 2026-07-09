@@ -24,6 +24,9 @@ const Contact: React.FC = () => {
         sms_opt_in: sms,
       });
       if (error) throw error;
+      supabase.functions.invoke('send-contact-email', {
+        body: { name: form.name, email: form.email, phone: form.phone, service: form.service, message: form.message },
+      }).catch(() => {});
       setStatus('done');
       setForm({ name: '', email: '', phone: '', service: '', message: '' });
     } catch {
@@ -36,9 +39,9 @@ const Contact: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 grid lg:grid-cols-2 gap-12">
         <div>
           <span className="text-[#4a90e2] font-semibold uppercase tracking-wider text-sm">Get In Touch</span>
-          <h2 className="mt-3 text-3xl lg:text-4xl font-extrabold text-[#1a1f3a]">
+          <h1 className="mt-3 text-3xl lg:text-4xl font-extrabold text-[#1a1f3a]">
             Request a free consultation
-          </h2>
+          </h1>
           <p className="mt-4 text-slate-600 leading-relaxed">
             Tell us about your project or IT needs. Our Nairobi team will get back to you with a practical,
             client-focused plan.
