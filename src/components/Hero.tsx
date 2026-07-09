@@ -1,13 +1,15 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight, ShieldCheck, Zap, Wrench, X } from 'lucide-react';
+import { ArrowRight, ShieldCheck, Zap, Wrench, X, Phone } from 'lucide-react';
 import { COMPANY, STATS } from '@/data/site';
+import FAQsModal from './FAQsModal';
 
 const Hero: React.FC = () => {
   const go = (id: string) => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
   const navigate = useNavigate();
   const [visible, setVisible] = useState(true);
   const [closing, setClosing] = useState(false);
+  const [showFAQs, setShowFAQs] = useState(false);
 
   const handleClose = useCallback(() => {
     setClosing(true);
@@ -26,20 +28,20 @@ const Hero: React.FC = () => {
     <section id="hero" className="min-h-screen flex items-center bg-[#1a1f3a] relative">
       {visible && (
         <div
-          className={`fixed right-4 lg:right-8 top-1/2 -translate-y-1/2 z-50 w-56 lg:w-64 rounded-xl overflow-hidden shadow-2xl ${closing ? 'animate-fly-out-right' : 'animate-fly-in-right'}`}
+          className={`fixed right-4 lg:right-8 top-1/2 -translate-y-1/2 z-50 w-72 lg:w-96 rounded-xl overflow-hidden shadow-2xl ${closing ? 'animate-fly-out-right' : 'animate-fly-in-right'}`}
         >
           <button onClick={handleClose}
-            className="absolute top-2 right-2 z-10 w-7 h-7 rounded-full bg-black/40 hover:bg-black/60 text-white flex items-center justify-center transition-colors"
+            className="absolute top-3 right-3 z-10 w-10 h-10 rounded-full bg-black/40 hover:bg-black/60 text-white flex items-center justify-center transition-colors"
           >
-            <X size={14} />
+            <X size={18} />
           </button>
           <a href="https://itukarua3.vercel.app/" target="_blank" rel="noopener noreferrer" className="block">
             <div className="relative aspect-[16/10]">
               <img src="/electrician.jpg" alt="" loading="lazy" className="absolute inset-0 w-full h-full object-cover" />
-              <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/30 to-transparent" />
-              <div className="absolute inset-0 flex flex-col justify-start items-center pt-3 px-3 text-center">
-                <span className="text-white text-base lg:text-lg font-bold leading-tight">Looking for a Hustle?</span>
-                <span className="text-[#00b894] text-sm lg:text-base font-semibold mt-1.5">Jobs Portal &rarr;</span>
+              <div className="absolute inset-0 bg-black/50" />
+              <div className="absolute inset-0 flex flex-col justify-center items-center px-4 text-center">
+                <span className="text-white text-4xl lg:text-6xl font-['Changa_One'] tracking-wide">Looking for a Hustle?</span>
+                <span className="text-[#00b894] text-xl lg:text-2xl font-['Changa_One'] mt-4">Jobs Portal &rarr;</span>
               </div>
             </div>
           </a>
@@ -57,10 +59,10 @@ const Hero: React.FC = () => {
 
           <div className="mt-8 flex flex-wrap gap-4">
             <button
-              onClick={() => go('contact')}
+              onClick={() => setShowFAQs(true)}
               className="inline-flex items-center gap-2 bg-[#f39c12] hover:bg-[#e08e0b] text-white px-7 py-3.5 rounded-lg font-semibold transition-colors shadow-lg"
             >
-              Get Started <ArrowRight size={18} />
+              <Phone size={18} /> Call / Help
             </button>
             <button
               onClick={() => navigate('/services')}
@@ -92,6 +94,7 @@ const Hero: React.FC = () => {
           </div>
         </div>
       </div>
+      <FAQsModal open={showFAQs} onClose={() => setShowFAQs(false)} />
     </section>
   );
 };

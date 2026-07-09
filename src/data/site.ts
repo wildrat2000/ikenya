@@ -274,5 +274,29 @@ export const PORTFOLIO: Project[] = [
     tech: ['React', 'Node.js', 'Vite', 'Python'],
     result:
       'The portal launched on schedule, onboarded employers steadily, and continues to run reliably with our maintenance and operations support.',
+    },
+  ];
+
+export interface FAQ {
+  q: string;
+  a: string;
+}
+
+export const FAQS: FAQ[] = [
+  {
+    q: 'How do I request a service?',
+    a: 'Fill out the contact form on our site or reach out via WhatsApp. We typically respond within 24 hours.',
+  },
+  {
+    q: 'What areas do you serve?',
+    a: 'We are based in Nairobi, Kenya, and serve clients across the country.',
+  },
+  {
+    q: 'What are your business hours?',
+    a: 'Monday to Friday 8:00 AM – 6:00 PM. Weekend inquiries are replied to on Monday.',
+  },
+  {
+    q: 'How quickly do you respond?',
+    a: 'Most inquiries get a first response within 2–4 hours during business hours.',
   },
 ];
