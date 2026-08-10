@@ -9,7 +9,6 @@ import { ThemeProvider } from "@/components/theme-provider";
 
 const HomePage = React.lazy(() => import("./pages/HomePage"));
 const ServicesPage = React.lazy(() => import("./pages/ServicesPage"));
-const PortfolioPage = React.lazy(() => import("./pages/PortfolioPage"));
 const AboutPage = React.lazy(() => import("./pages/AboutPage"));
 const ContactPage = React.lazy(() => import("./pages/ContactPage"));
 const ServiceDetailPage = React.lazy(() => import("./pages/ServiceDetailPage"));
@@ -37,7 +36,6 @@ const App = () => (
             <Route path="/" element={<HomePage />} />
             <Route path="/services" element={<ServicesPage />} />
             <Route path="/services/:id" element={<ServiceDetailPage />} />
-            <Route path="/portfolio" element={<PortfolioPage />} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/contact" element={<ContactPage />} />
             <Route path="/admin" element={<AdminLoginPage />} />

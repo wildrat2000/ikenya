@@ -86,10 +86,6 @@ const ServiceDetailPage: React.FC = () => {
               className="inline-flex items-center gap-2 bg-[#f39c12] hover:bg-[#e08e0b] text-white px-6 py-3 rounded-lg font-semibold transition-colors">
               Request This Service <ArrowRight size={18} />
             </button>
-            <button onClick={() => navigate('/portfolio')}
-              className="inline-flex items-center gap-2 bg-white border border-slate-200 hover:border-[#4a90e2] text-slate-700 px-6 py-3 rounded-lg font-semibold transition-colors">
-              View Related Work
-            </button>
           </div>
         </div>
       </div>
