@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Check, ArrowRight } from 'lucide-react';
+import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
-import { SERVICES as FALLBACK } from '@/data/site';
+import { SERVICES as FALLBACK, GalleryItem } from '@/data/site';
 import SEO from '@/components/SEO';
 import AppLayout from '@/components/AppLayout';
 import Icon from '@/components/Icon';
+import ImageCarousel from '@/components/ImageCarousel';
 
 interface ServiceItem {
   id: string;
@@ -14,6 +15,7 @@ interface ServiceItem {
   points: string[];
   icon: string;
   img: string;
+  gallery: GalleryItem[];
 }
 
 const ServiceDetailPage: React.FC = () => {
@@ -68,19 +70,16 @@ const ServiceDetailPage: React.FC = () => {
         </div>
 
         <div className="max-w-4xl mx-auto px-4 sm:px-6 py-16">
-          <h2 className="text-2xl font-bold text-[#1a1f3a] mb-6">What We Deliver</h2>
-          <div className="space-y-4">
-            {service.points.map((p, i) => (
-              <div key={i} className="flex items-start gap-3 bg-white rounded-xl p-5 shadow-sm">
-                <div className="w-8 h-8 rounded-lg bg-[#4a90e2]/10 flex items-center justify-center shrink-0">
-                  <Check size={16} className="text-[#4a90e2]" />
-                </div>
-                <div>
-                  <p className="text-slate-800 font-medium">{p}</p>
-                </div>
+          {service.gallery?.length > 0 && (
+            <>
+              <div className="bg-[#1a1f3a] -mx-4 sm:-mx-6 px-4 sm:px-6 py-6 mb-6">
+                <h2 className="text-2xl font-bold text-white">{service.id === 'hosting' ? 'Our Providers' : 'Our Work'}</h2>
               </div>
-            ))}
-          </div>
+              <div className="-mx-4 sm:-mx-6 px-4 sm:px-6">
+                <ImageCarousel images={service.gallery} />
+              </div>
+            </>
+          )}
 
           <div className="mt-12 flex flex-wrap gap-4">
             <button onClick={() => { navigate('/contact'); }}

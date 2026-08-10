@@ -45,7 +45,7 @@ const Services: React.FC = () => {
               onClick={() => navigate(`/services/${s.id}`)}
               className="group text-left bg-white rounded-2xl overflow-hidden border border-slate-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all"
             >
-              <div className="aspect-[16/9] overflow-hidden relative">
+              <div className="aspect-[16/9] rounded-xl overflow-hidden relative">
                 <img src={s.img} alt={s.title} loading="lazy" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                 <div className="absolute bottom-3 left-4 right-4">

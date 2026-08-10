@@ -15,6 +15,11 @@ export const COMPANY = {
     'https://famous.ai/api/crm/6a3bcc9db53d660313cad858/calendar/public?calendarId=ada5d031-a84c-47e6-a37c-b868ed705075&view=booking',
 };
 
+export interface GalleryItem {
+  url: string;
+  link?: string;
+}
+
 export interface Service {
   id: string;
   title: string;
@@ -22,6 +27,7 @@ export interface Service {
   points: string[];
   icon: string;
   img: string;
+  gallery: GalleryItem[];
 }
 
 const SERVICE_IMAGES: Record<string, string> = {
@@ -41,6 +47,7 @@ export const SERVICES: Service[] = [
     points: ['React, Node.js & Vite', 'Python & WordPress', 'HTML / CSS & ongoing maintenance'],
     icon: 'code',
     img: SERVICE_IMAGES.web,
+    gallery: [],
   },
   {
     id: 'hosting',
@@ -49,6 +56,7 @@ export const SERVICES: Service[] = [
     points: ['Domain strategy & setup', 'Hosting selection & migration', 'Renewals & support guidance'],
     icon: 'globe',
     img: SERVICE_IMAGES.hosting,
+    gallery: [],
   },
   {
     id: 'network',
@@ -57,6 +65,7 @@ export const SERVICES: Service[] = [
     points: ['Office networking & structured cabling', 'Router & firewall deployment', 'Optimization & troubleshooting'],
     icon: 'network',
     img: SERVICE_IMAGES.network,
+    gallery: [],
   },
   {
     id: 'server',
@@ -65,6 +74,7 @@ export const SERVICES: Service[] = [
     points: ['HP server sales & supply', 'Setup & administration', 'Ongoing support'],
     icon: 'server',
     img: SERVICE_IMAGES.server,
+    gallery: [],
   },
   {
     id: 'software',
@@ -73,6 +83,7 @@ export const SERVICES: Service[] = [
     points: ['Custom software products', 'Off-the-shelf solutions', 'Maintenance & support'],
     icon: 'box',
     img: SERVICE_IMAGES.software,
+    gallery: [],
   },
   {
     id: 'jobs',
@@ -81,6 +92,7 @@ export const SERVICES: Service[] = [
     points: ['Portal development', 'Localized job listings', 'Operations support'],
     icon: 'briefcase',
     img: SERVICE_IMAGES.jobs,
+    gallery: [],
   },
 ];
 
