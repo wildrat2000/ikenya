@@ -107,7 +107,7 @@ const WebsitePortfolioSlider: React.FC = () => {
   useEffect(() => {
     const update = () => {
       const w = window.innerWidth;
-      setPerView(w < 640 ? 1 : w < 768 ? 2 : w < 1024 ? 3 : 5);
+      setPerView(w < 640 ? 1 : w < 768 ? 2 : 3);
     };
     update();
     window.addEventListener('resize', update);
@@ -151,7 +151,7 @@ const WebsitePortfolioSlider: React.FC = () => {
         >
           <div className="relative group">
             <div
-              className={`relative w-full overflow-hidden rounded-2xl bg-slate-200 aspect-[4/3] sm:aspect-[16/9] ${
+              className={`relative w-full overflow-hidden rounded-2xl bg-slate-200 aspect-[4/3] sm:aspect-[16/9] md:aspect-[7/2] ${
                 settings.effect === 'fade' ? '' : 'ring-1 ring-slate-200'
               }`}
             >
