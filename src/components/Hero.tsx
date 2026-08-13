@@ -33,7 +33,7 @@ const Hero: React.FC = () => {
     <section id="hero" className="min-h-screen flex items-center bg-[#1a1f3a] relative">
       {visible && (
         <div
-          className={`fixed right-4 lg:right-8 top-1/2 -translate-y-1/2 z-50 w-72 lg:w-96 rounded-xl overflow-hidden shadow-2xl ${closing ? 'animate-fly-out-right' : 'animate-fly-in-right'}`}
+          className={`fixed right-4 lg:right-8 top-1/2 -translate-y-1/2 z-50 w-[230px] lg:w-[300px] rounded-xl overflow-hidden shadow-2xl ${closing ? 'animate-fly-out-right' : 'animate-fly-in-right'}`}
         >
           <button onClick={handleClose}
             className="absolute top-3 right-3 z-10 w-10 h-10 rounded-full bg-black/40 hover:bg-black/60 text-white flex items-center justify-center transition-colors"
