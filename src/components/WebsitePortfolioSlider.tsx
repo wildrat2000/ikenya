@@ -142,12 +142,6 @@ const WebsitePortfolioSlider: React.FC = () => {
           <span className="text-sm font-semibold uppercase tracking-[0.22em] text-[#4a90e2]">
             Our Work
           </span>
-          <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-[#1a1f3a] lg:text-5xl">
-            Websites We've Built
-          </h2>
-          <p className="mt-4 text-base text-slate-600 lg:text-lg">
-            Real projects — sites and apps crafted for speed, clarity, and performance.
-          </p>
         </div>
 
         <div
