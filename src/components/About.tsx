@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ShieldCheck, Server, Wifi, Users, Zap, X, Calendar, Globe, Users2, MonitorPlay, Database, HardDrive, Building2, ExternalLink } from 'lucide-react';
+import { ShieldCheck, Server, Wifi, Users, Zap, X, Calendar, Globe, Users2, MonitorPlay, Database, HardDrive, Building2, ExternalLink, Mail, FileText, Terminal } from 'lucide-react';
 import { SERVICE_SKILLS } from '@/data/site';
 import { SIM_LOGO } from '@/data/simLogo';
 import { ACT_LOGO } from '@/data/actLogo';
+import { DAI_LOGO, AFEX_LOGO } from '@/data/workLogos';
 
 const roles = [
   'Microsoft 365 & SharePoint Online Specialist',
@@ -13,42 +14,85 @@ const roles = [
   'Remote Contractor',
 ];
 
-const roleClickable = [0, 1];
-
 const roleModals = {
   sim: {
-    logo: SIM_LOGO,
-    title: 'SharePoint Online Administrator',
-    company: 'SIM International',
-    dates: 'May 2023 – Nov 2024',
     gradient: 'from-[#7c3aed] via-[#4f46e5] to-[#0ea5e9]',
     accent: 'from-[#7c3aed] to-[#0ea5e9]',
-    summary:
-      'Led the development of global intranet portals for 78 countries, trained over 80 regional trainers, and supported more than 400 SharePoint portals serving a user base of slightly over 3,000 users.',
-    highlights: [
-      { icon: Globe, title: '78 countries', desc: 'Global intranet portals deployed across SIM International.' },
-      { icon: Users2, title: '80+ trainers', desc: 'Regional trainers empowered to own and operate their portals.' },
-      { icon: MonitorPlay, title: '400+ portals', desc: 'SharePoint portal environments built and supported end-to-end.' },
-      { icon: Zap, title: '3,000+ users', desc: 'A growing global user base supported every day.' },
+    positions: [
+      {
+        logo: SIM_LOGO,
+        title: 'SharePoint Online Administrator',
+        company: 'SIM International',
+        dates: 'May 2023 – Nov 2024',
+        summary:
+          'Led the development of global intranet portals for 78 countries, trained over 80 regional trainers, and supported more than 400 SharePoint portals serving a user base of slightly over 3,000 users.',
+        highlights: [
+          { icon: Globe, title: '78 countries', desc: 'Global intranet portals deployed across SIM International.' },
+          { icon: Users2, title: '80+ trainers', desc: 'Regional trainers empowered to own and operate their portals.' },
+          { icon: MonitorPlay, title: '400+ portals', desc: 'SharePoint portal environments built and supported end-to-end.' },
+          { icon: Zap, title: '3,000+ users', desc: 'A growing global user base supported every day.' },
+        ],
+        footer: 'A proven track record designing and scaling enterprise collaboration platforms for a worldwide non-profit organization.',
+      },
     ],
-    footer: 'A proven track record designing and scaling enterprise collaboration platforms for a worldwide non-profit organization.',
   },
   pact: {
-    logo: ACT_LOGO,
-    title: 'ICT Manager',
-    company: 'PACT Inc / PACT Kenya (now ACT)',
-    dates: 'Jan 2008 – Nov 2019',
     gradient: 'from-[#dc2626] via-[#ea580c] to-[#f59e0b]',
     accent: 'from-[#dc2626] to-[#f59e0b]',
-    summary:
-      'Administered Windows Server environments, SQL databases, ACCPAC, and Microsoft Dynamics HRM. Supported 60+ staff nationwide and managed the Office 365 full E1 solution for 200+ users.',
-    highlights: [
-      { icon: Server, title: 'Windows Servers', desc: 'Administered and maintained reliable Windows Server environments.' },
-      { icon: Database, title: 'SQL & ACCPAC', desc: 'Managed SQL databases and the ACCPAC ERP accounting system.' },
-      { icon: Building2, title: '60+ staff', desc: 'Nationwide support keeping teams productive and connected.' },
-      { icon: HardDrive, title: 'Office 365 E1', desc: 'Full E1 solution managed for 200+ users across the organization.' },
+    positions: [
+      {
+        logo: ACT_LOGO,
+        title: 'ICT Manager',
+        company: 'PACT Inc / PACT Kenya (now ACT)',
+        dates: 'Jan 2008 – Nov 2019',
+        summary:
+          'Administered Windows Server environments, SQL databases, ACCPAC, and Microsoft Dynamics HRM. Supported 60+ staff nationwide and managed the Office 365 full E1 solution for 200+ users.',
+        highlights: [
+          { icon: Server, title: 'Windows Servers', desc: 'Administered and maintained reliable Windows Server environments.' },
+          { icon: Database, title: 'SQL & ACCPAC', desc: 'Managed SQL databases and the ACCPAC ERP accounting system.' },
+          { icon: Building2, title: '60+ staff', desc: 'Nationwide support keeping teams productive and connected.' },
+          { icon: HardDrive, title: 'Office 365 E1', desc: 'Full E1 solution managed for 200+ users across the organization.' },
+        ],
+        footer: 'Over a decade delivering dependable IT operations and enterprise systems for an international development organization.',
+      },
     ],
-    footer: 'Over a decade delivering dependable IT operations and enterprise systems for an international development organization.',
+  },
+  helpdesk: {
+    gradient: 'from-[#0e7490] via-[#0891b2] to-[#06b6d4]',
+    accent: 'from-[#0e7490] to-[#06b6d4]',
+    positions: [
+      {
+        logo: DAI_LOGO,
+        location: '(South Sudan)',
+        title: 'ICT Specialist',
+        company: 'Development Alternatives Inc (USAID Contractor)',
+        dates: 'Oct 2006 – Jan 2008',
+        summary:
+          'Administered Windows 2003 Server environments and Lotus Domino ERP systems for the Kenya and Sudan offices. Provided VPN and LAN/WAN support, remote connectivity, document management, and server/client email replication administration for 30+ users.',
+        highlights: [
+          { icon: Server, title: 'Windows 2003 Servers', desc: 'Administered and maintained Windows 2003 Server environments.' },
+          { icon: Database, title: 'Lotus Domino ERP', desc: 'Managed Lotus Domino ERP systems for Kenya and Sudan offices.' },
+          { icon: Wifi, title: 'VPN & LAN/WAN', desc: 'Remote connectivity, VPN, and LAN/WAN support across offices.' },
+          { icon: Mail, title: '30+ users', desc: 'Server/client email replication administration for 30+ users.' },
+        ],
+        footer: 'Delivered dependable ICT operations and remote connectivity for a USAID-funded development contractor.',
+      },
+      {
+        logo: AFEX_LOGO,
+        title: 'VSAT Technician',
+        company: 'Africa Expeditions (United Nations Operation LifeLine Sudan Contractor)',
+        dates: 'Feb 2005 – Sept 2006',
+        summary:
+          'Maintained VSAT and ADSL connectivity for 20+ INGO clients under UN-OLS. Supported Fedora and Ubuntu Linux-based email and billing servers.',
+        highlights: [
+          { icon: Wifi, title: 'VSAT & ADSL', desc: 'Maintained VSAT and ADSL connectivity for 20+ INGO clients.' },
+          { icon: Globe, title: 'UN-OLS', desc: 'Connectivity services delivered under the UN Operation LifeLine Sudan.' },
+          { icon: Terminal, title: 'Linux Servers', desc: 'Supported Fedora and Ubuntu Linux-based email servers.' },
+          { icon: FileText, title: 'Billing Servers', desc: 'Maintained Linux-based email and billing systems.' },
+        ],
+        footer: 'Kept humanitarian aid organizations online across South Sudan with reliable satellite and terrestrial connectivity.',
+      },
+    ],
   },
 };
 
@@ -61,7 +105,7 @@ const values = [
 
 const About: React.FC = () => {
   const navigate = useNavigate();
-  const [activeRole, setActiveRole] = useState<'sim' | 'pact' | null>(null);
+  const [activeRole, setActiveRole] = useState<'sim' | 'pact' | 'helpdesk' | null>(null);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -71,7 +115,8 @@ const About: React.FC = () => {
     return () => document.removeEventListener('keydown', onKey);
   }, [activeRole]);
 
-  const roleKeyForIndex = (i: number): 'sim' | 'pact' | null => (i === 0 ? 'sim' : i === 1 ? 'pact' : null);
+  const roleKeyForIndex = (i: number): 'sim' | 'pact' | 'helpdesk' | null =>
+    i === 0 ? 'sim' : i === 1 ? 'pact' : i === 3 ? 'helpdesk' : null;
 
   return (
     <section id="about" className="py-20 lg:py-28 bg-[#1a1f3a] text-white">
@@ -165,52 +210,61 @@ const About: React.FC = () => {
         <div className="fixed inset-0 z-[70] flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={() => setActiveRole(null)} />
           <div className="relative w-full max-w-lg bg-[#0f172a] rounded-3xl shadow-2xl border border-white/10 animate-fade-in max-h-[85vh] overflow-y-auto">
-            <div className={`bg-gradient-to-br ${roleModals[activeRole].gradient} p-6`}>
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-4">
-                  <div className="w-16 h-16 rounded-2xl bg-white p-2 shadow-lg flex items-center justify-center">
-                    <img src={roleModals[activeRole].logo} alt={`${roleModals[activeRole].company} logo`} className="w-full h-full object-contain" />
-                  </div>
-                  <div>
-                    <h3 className="text-white font-extrabold text-lg leading-tight">{roleModals[activeRole].title}</h3>
-                    <p className="text-indigo-200 text-sm font-semibold mt-0.5">{roleModals[activeRole].company}</p>
-                    <span className="inline-flex items-center gap-1.5 mt-2 bg-white/20 text-white text-xs px-2.5 py-1 rounded-full font-medium">
-                      <Calendar size={12} /> {roleModals[activeRole].dates}
-                    </span>
+            {roleModals[activeRole].positions.map((pos, pi) => (
+              <div key={pi} className={pi > 0 ? 'border-t border-white/10' : ''}>
+                <div className={`bg-gradient-to-br ${roleModals[activeRole].gradient} p-6 ${pi === 0 ? '' : 'pb-4'}`}>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-4">
+                      <div className="w-16 h-16 rounded-2xl bg-white p-2 shadow-lg flex items-center justify-center shrink-0">
+                        <img src={pos.logo} alt={`${pos.company} logo`} className="w-full h-full object-contain" />
+                      </div>
+                      <div>
+                        {pos.location && (
+                          <p className="text-white/80 text-xs font-semibold uppercase tracking-wider">{pos.location}</p>
+                        )}
+                        <h3 className="text-white font-extrabold text-lg leading-tight">{pos.title}</h3>
+                        <p className="text-indigo-200 text-sm font-semibold mt-0.5">{pos.company}</p>
+                        <span className="inline-flex items-center gap-1.5 mt-2 bg-white/20 text-white text-xs px-2.5 py-1 rounded-full font-medium">
+                          <Calendar size={12} /> {pos.dates}
+                        </span>
+                      </div>
+                    </div>
+                    {pi === 0 && (
+                      <button
+                        onClick={() => setActiveRole(null)}
+                        aria-label="Close"
+                        className="w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 text-white flex items-center justify-center transition-colors"
+                      >
+                        <X size={16} />
+                      </button>
+                    )}
                   </div>
                 </div>
-                <button
-                  onClick={() => setActiveRole(null)}
-                  aria-label="Close"
-                  className="w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 text-white flex items-center justify-center transition-colors"
-                >
-                  <X size={16} />
-                </button>
-              </div>
-            </div>
 
-            <div className="p-6">
-              <p className="text-slate-300 text-sm leading-relaxed">{roleModals[activeRole].summary}</p>
+                <div className="p-6">
+                  <p className="text-slate-300 text-sm leading-relaxed">{pos.summary}</p>
 
-              <div className="mt-5 grid grid-cols-2 gap-3">
-                {roleModals[activeRole].highlights.map((h) => {
-                  const Icon = h.icon;
-                  return (
-                    <div key={h.title} className="rounded-2xl bg-white/5 border border-white/10 p-4">
-                      <div className={`w-9 h-9 rounded-lg bg-gradient-to-br ${roleModals[activeRole].accent} flex items-center justify-center mb-3`}>
-                        <Icon size={18} className="text-white" />
-                      </div>
-                      <p className="text-white font-bold">{h.title}</p>
-                      <p className="text-slate-400 text-xs mt-1 leading-relaxed">{h.desc}</p>
-                    </div>
-                  );
-                })}
-              </div>
+                  <div className="mt-5 grid grid-cols-2 gap-3">
+                    {pos.highlights.map((h) => {
+                      const Icon = h.icon;
+                      return (
+                        <div key={h.title} className="rounded-2xl bg-white/5 border border-white/10 p-4">
+                          <div className={`w-9 h-9 rounded-lg bg-gradient-to-br ${roleModals[activeRole].accent} flex items-center justify-center mb-3`}>
+                            <Icon size={18} className="text-white" />
+                          </div>
+                          <p className="text-white font-bold">{h.title}</p>
+                          <p className="text-slate-400 text-xs mt-1 leading-relaxed">{h.desc}</p>
+                        </div>
+                      );
+                    })}
+                  </div>
 
-              <div className={`mt-5 rounded-2xl bg-gradient-to-r ${roleModals[activeRole].accent}/20 border border-white/10 p-4 text-sm text-slate-300`}>
-                {roleModals[activeRole].footer}
+                  <div className={`mt-5 rounded-2xl bg-gradient-to-r ${roleModals[activeRole].accent}/20 border border-white/10 p-4 text-sm text-slate-300`}>
+                    {pos.footer}
+                  </div>
+                </div>
               </div>
-            </div>
+            ))}
           </div>
         </div>
       )}
