@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { ChevronLeft, ChevronRight, ExternalLink } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ExternalLink, X } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 
 interface Website {
@@ -56,6 +56,7 @@ const WebsitePortfolioSlider: React.FC = () => {
   const [page, setPage] = useState(0);
   const [paused, setPaused] = useState(false);
   const [perView, setPerView] = useState(3);
+  const [lightbox, setLightbox] = useState<Website | null>(null);
 
   useEffect(() => {
     setIsMounted(true);
@@ -123,6 +124,15 @@ const WebsitePortfolioSlider: React.FC = () => {
     return () => clearInterval(timer);
   }, [paused, pages, settings.interval]);
 
+  useEffect(() => {
+    if (!lightbox) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setLightbox(null);
+    };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [lightbox]);
+
   const goPrev = useCallback(() => setPage((p) => (p - 1 + pages) % pages), [pages]);
   const goNext = useCallback(() => setPage((p) => (p + 1) % pages), [pages]);
 
@@ -162,7 +172,7 @@ const WebsitePortfolioSlider: React.FC = () => {
                       style={transitionStyle}
                     >
                       {group.map((website) => (
-                        <SlideCard key={website.id} website={website} />
+                        <SlideCard key={website.id} website={website} onPreview={setLightbox} />
                       ))}
                     </div>
                   ))}
@@ -188,7 +198,7 @@ const WebsitePortfolioSlider: React.FC = () => {
                       style={settings.effect === 'coverflow' ? transitionStyle : undefined}
                     >
                       {group.map((website) => (
-                        <SlideCard key={website.id} website={website} />
+                        <SlideCard key={website.id} website={website} onPreview={setLightbox} />
                       ))}
                     </div>
                   ))}
@@ -232,11 +242,47 @@ const WebsitePortfolioSlider: React.FC = () => {
           )}
         </div>
       </div>
+
+      {lightbox && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 sm:p-8"
+          onClick={() => setLightbox(null)}
+        >
+          <button
+            aria-label="Close preview"
+            onClick={() => setLightbox(null)}
+            className="absolute right-4 top-4 z-10 rounded-full bg-white/15 p-2.5 text-white hover:bg-white/30 transition-colors"
+          >
+            <X size={22} />
+          </button>
+          <div
+            className="max-h-full w-full max-w-5xl overflow-hidden rounded-2xl bg-white shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="max-h-[75vh] overflow-auto">
+              <img
+                src={lightbox.image_url || undefined}
+                alt={lightbox.title}
+                className="w-full object-contain"
+              />
+            </div>
+            <div className="border-t border-slate-100 px-5 py-3.5 flex items-center justify-between gap-4">
+              <p className="font-semibold text-[#1a1f3a]">{lightbox.title}</p>
+              {lightbox.description && (
+                <p className="hidden sm:block text-sm text-slate-500 truncate">{lightbox.description}</p>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 };
 
-const SlideCard: React.FC<{ website: Website }> = ({ website }) => {
+const SlideCard: React.FC<{ website: Website; onPreview?: (w: Website) => void }> = ({
+  website,
+  onPreview,
+}) => {
   const image = website.image_url ? (
     <img
       src={website.image_url}
@@ -255,21 +301,26 @@ const SlideCard: React.FC<{ website: Website }> = ({ website }) => {
   );
 
   const caption = (
-    <div className="shrink-0 border-t border-slate-100 bg-white px-3 py-2 sm:py-2.5">
-      <p className="truncate text-xs sm:text-sm font-semibold text-[#1a1f3a]">
+    <span className="shrink-0 block border-t border-slate-100 bg-white px-3 py-2 sm:py-2.5">
+      <span className="block truncate text-xs sm:text-sm font-semibold text-[#1a1f3a]">
         {website.title}
-      </p>
-    </div>
+      </span>
+    </span>
   );
 
   if (!website.url) {
     return (
-      <div className="relative h-full w-full sm:w-1/2 md:w-1/3 lg:w-1/4 px-1.5 sm:px-2">
-        <div className="group flex h-full w-full flex-col overflow-hidden rounded-xl sm:rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm">
-          <div className="relative min-h-0 flex-1 overflow-hidden">{image}</div>
+      <button
+        type="button"
+        onClick={() => onPreview?.(website)}
+        aria-label={`Preview ${website.title}`}
+        className="relative h-full w-full sm:w-1/2 md:w-1/3 lg:w-1/4 px-1.5 sm:px-2 text-left"
+      >
+        <span className="group flex h-full w-full flex-col overflow-hidden rounded-xl sm:rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm transition-all duration-300 group-hover:-translate-y-1.5 group-hover:shadow-xl group-hover:ring-slate-300">
+          <span className="relative min-h-0 flex-1 overflow-hidden">{image}</span>
           {caption}
-        </div>
-      </div>
+        </span>
+      </button>
     );
   }
 
