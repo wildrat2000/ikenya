@@ -89,7 +89,7 @@ const Services: React.FC = () => {
       {activeHosting && hosting && (
         <div className="fixed inset-0 z-[70] flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={() => setActiveHosting(false)} />
-          <div className="relative w-full max-w-lg bg-[#0f172a] rounded-3xl shadow-2xl border border-white/10 animate-fade-in max-h-[85vh] overflow-y-auto">
+          <div className="relative w-full max-w-[614px] bg-[#0f172a] rounded-3xl shadow-2xl border border-white/10 animate-fade-in max-h-[85vh] overflow-y-auto">
             <div className="bg-gradient-to-br from-[#0ea5e9] via-[#3b82f6] to-[#6366f1] p-6">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4">
@@ -113,41 +113,45 @@ const Services: React.FC = () => {
               </div>
             </div>
 
-            <div className="p-6">
-              <p className="text-slate-300 text-sm leading-relaxed">{hosting.desc}</p>
+            <div className="p-6 flex gap-6">
+              <div className="flex-1 min-w-0">
+                <p className="text-slate-300 text-sm leading-relaxed">{hosting.desc}</p>
 
-              <div className="mt-5 grid grid-cols-2 gap-3">
-                {HOSTING_HIGHLIGHTS.map((h) => {
-                  const Icon = h.icon;
-                  return (
-                    <div key={h.title} className="rounded-2xl bg-white/5 border border-white/10 p-4">
-                      <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-[#0ea5e9] to-[#6366f1] flex items-center justify-center mb-3">
-                        <Icon size={18} className="text-white" />
+                <div className="mt-5 grid grid-cols-2 gap-3">
+                  {HOSTING_HIGHLIGHTS.map((h) => {
+                    const Icon = h.icon;
+                    return (
+                      <div key={h.title} className="rounded-2xl bg-white/5 border border-white/10 p-4">
+                        <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-[#0ea5e9] to-[#6366f1] flex items-center justify-center mb-3">
+                          <Icon size={18} className="text-white" />
+                        </div>
+                        <p className="text-white font-bold">{h.title}</p>
+                        <p className="text-slate-400 text-xs mt-1 leading-relaxed">{h.desc}</p>
                       </div>
-                      <p className="text-white font-bold">{h.title}</p>
-                      <p className="text-slate-400 text-xs mt-1 leading-relaxed">{h.desc}</p>
-                    </div>
-                  );
-                })}
-              </div>
+                    );
+                  })}
+                </div>
 
-              <div className="mt-5 rounded-2xl bg-gradient-to-r from-[#0ea5e9]/20 to-[#6366f1]/20 border border-white/10 p-4 text-sm text-slate-300">
-                Let us handle your domain, hosting, and renewals so your website stays fast, secure, and always online.
+                <div className="mt-5 rounded-2xl bg-gradient-to-r from-[#0ea5e9]/20 to-[#6366f1]/20 border border-white/10 p-4 text-sm text-slate-300">
+                  Let us handle your domain, hosting, and renewals so your website stays fast, secure, and always online.
+                </div>
+
+                <button
+                  onClick={() => { setActiveHosting(false); navigate(`/contact?service=${encodeURIComponent(hosting.title)}`); }}
+                  className="mt-5 w-full inline-flex items-center justify-center gap-2 bg-[#f39c12] hover:bg-[#e08e0b] text-white px-6 py-3 rounded-lg font-semibold transition-colors"
+                >
+                  Enquire About This Service <ArrowRight size={18} />
+                </button>
               </div>
 
               {hosting.gallery?.length > 0 && (
-                <div className="mt-5">
+                <div className="w-40 shrink-0 flex flex-col border-l border-white/10 pl-5">
                   <h4 className="text-white font-bold text-sm mb-3">Our Providers</h4>
-                  <ImageCarousel images={hosting.gallery} />
+                  <div className="flex-1 min-h-0">
+                    <ImageCarousel vertical images={hosting.gallery} />
+                  </div>
                 </div>
               )}
-
-              <button
-                onClick={() => { setActiveHosting(false); navigate(`/contact?service=${encodeURIComponent(hosting.title)}`); }}
-                className="mt-5 w-full inline-flex items-center justify-center gap-2 bg-[#f39c12] hover:bg-[#e08e0b] text-white px-6 py-3 rounded-lg font-semibold transition-colors"
-              >
-                Enquire About This Service <ArrowRight size={18} />
-              </button>
             </div>
           </div>
         </div>
