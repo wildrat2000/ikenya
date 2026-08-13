@@ -1,5 +1,7 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ShieldCheck, Server, Wifi, Users, Zap } from 'lucide-react';
+import { SERVICE_SKILLS } from '@/data/site';
 
 const roles = [
   'Microsoft 365 & SharePoint Online Specialist',
@@ -7,12 +9,6 @@ const roles = [
   'Infrastructure Consultant',
   'Help Desk Specialist',
   'Remote Contractor',
-];
-
-const skills = [
-  'Microsoft 365', 'SharePoint', 'Network Infrastructure',
-  'Systems Administration', 'Help Desk', 'Cloud Solutions',
-  'Security & Compliance', 'Server Deployment',
 ];
 
 const values = [
@@ -23,6 +19,8 @@ const values = [
 ];
 
 const About: React.FC = () => {
+  const navigate = useNavigate();
+
   return (
     <section id="about" className="py-20 lg:py-28 bg-[#1a1f3a] text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
@@ -71,10 +69,14 @@ const About: React.FC = () => {
             </div>
 
             <div className="mt-6 flex flex-wrap gap-2">
-              {skills.map((s) => (
-                <span key={s} className="bg-[#4a90e2]/10 border border-[#4a90e2]/20 text-[#4a90e2] text-xs px-3 py-1.5 rounded-md">
+              {SERVICE_SKILLS.map((s) => (
+                <button
+                  key={s}
+                  onClick={() => navigate(`/contact?service=${encodeURIComponent(s)}`)}
+                  className="bg-[#4a90e2]/10 border border-[#4a90e2]/20 text-[#4a90e2] text-xs px-3 py-1.5 rounded-md hover:bg-[#4a90e2] hover:text-white transition-colors cursor-pointer"
+                >
                   {s}
-                </span>
+                </button>
               ))}
             </div>
           </div>

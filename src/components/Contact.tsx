@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Mail, Phone, MapPin, Calendar, Loader2, CheckCircle2 } from 'lucide-react';
 import { useSearchParams } from 'react-router-dom';
-import { COMPANY, SERVICES } from '@/data/site';
+import { COMPANY, SERVICES, SERVICE_SKILLS } from '@/data/site';
 import { supabase } from '@/lib/supabase';
 import BookingModal from './BookingModal';
 
@@ -128,9 +128,14 @@ const Contact: React.FC = () => {
                   className="mt-1 w-full px-4 py-3 rounded-lg border border-slate-200 focus:border-[#4a90e2] focus:ring-2 focus:ring-[#4a90e2]/20 outline-none bg-white"
                 >
                   <option value="">Select a service</option>
-                  {form.service && !SERVICES.some((s) => s.title === form.service) && (
-                    <option value={form.service}>{form.service}</option>
-                  )}
+                  {form.service &&
+                    !SERVICE_SKILLS.includes(form.service) &&
+                    !SERVICES.some((s) => s.title === form.service) && (
+                      <option value={form.service}>{form.service}</option>
+                    )}
+                  {SERVICE_SKILLS.map((s) => (
+                    <option key={s} value={s}>{s}</option>
+                  ))}
                   {SERVICES.map((s) => (
                     <option key={s.id} value={s.title}>{s.title}</option>
                   ))}
