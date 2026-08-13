@@ -44,9 +44,9 @@ const Hero: React.FC = () => {
             <div className="relative aspect-[16/10]">
               <img src="/electrician.jpg" alt="" loading="lazy" className="absolute inset-0 w-full h-full object-cover" />
               <div className="absolute inset-0 bg-black/50" />
-              <div className="absolute inset-0 flex flex-col justify-center items-center px-4 text-center">
-                <span className="text-white text-4xl lg:text-6xl font-['Changa_One'] tracking-wide">Looking for a Hustle?</span>
-                <span className="text-[#00b894] text-xl lg:text-2xl font-['Changa_One'] mt-4">Jobs Portal &rarr;</span>
+              <div className="absolute inset-0 flex flex-col justify-center items-center px-3 text-center">
+                <span className="text-white text-xl lg:text-2xl font-['Changa_One'] tracking-wide leading-snug">Looking for a Hustle?</span>
+                <span className="text-[#00b894] text-sm lg:text-base font-['Changa_One'] mt-2">Jobs Portal &rarr;</span>
               </div>
             </div>
           </a>
