@@ -107,7 +107,7 @@ const WebsitePortfolioSlider: React.FC = () => {
   useEffect(() => {
     const update = () => {
       const w = window.innerWidth;
-      setPerView(w < 640 ? 1 : w < 768 ? 2 : 3);
+      setPerView(w < 640 ? 1 : w < 768 ? 2 : w < 1024 ? 3 : 4);
     };
     update();
     window.addEventListener('resize', update);
@@ -264,7 +264,7 @@ const SlideCard: React.FC<{ website: Website }> = ({ website }) => {
 
   if (!website.url) {
     return (
-      <div className="relative h-full w-full sm:w-1/2 md:w-1/3 px-1.5 sm:px-2">
+      <div className="relative h-full w-full sm:w-1/2 md:w-1/3 lg:w-1/4 px-1.5 sm:px-2">
         <div className="group flex h-full w-full flex-col overflow-hidden rounded-xl sm:rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm">
           <div className="relative min-h-0 flex-1 overflow-hidden">{image}</div>
           {caption}
@@ -278,7 +278,7 @@ const SlideCard: React.FC<{ website: Website }> = ({ website }) => {
       href={website.url}
       target="_blank"
       rel="noopener noreferrer"
-      className="group relative h-full w-full sm:w-1/2 md:w-1/3 px-1.5 sm:px-2 block"
+      className="group relative h-full w-full sm:w-1/2 md:w-1/3 lg:w-1/4 px-1.5 sm:px-2 block"
     >
       <div className="flex h-full w-full flex-col overflow-hidden rounded-xl sm:rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm transition-all duration-300 group-hover:-translate-y-1.5 group-hover:shadow-xl group-hover:ring-slate-300">
         <div className="relative min-h-0 flex-1 overflow-hidden">{image}</div>
