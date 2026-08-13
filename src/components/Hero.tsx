@@ -4,36 +4,22 @@ import { ArrowRight, ShieldCheck, Zap, Wrench, X, Phone } from 'lucide-react';
 import { COMPANY, STATS } from '@/data/site';
 import FAQsModal from './FAQsModal';
 
-const HUSTLE_DISMISS_KEY = 'itukarua-hustle-dismissed';
-
 const Hero: React.FC = () => {
   const go = (id: string) => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
   const navigate = useNavigate();
-  const [visible, setVisible] = useState(() => {
-    try {
-      return !localStorage.getItem(HUSTLE_DISMISS_KEY);
-    } catch {
-      return true;
-    }
-  });
+  const [visible, setVisible] = useState(true);
   const [closing, setClosing] = useState(false);
   const [showFAQs, setShowFAQs] = useState(false);
 
   const handleClose = useCallback(() => {
     setClosing(true);
-    setTimeout(() => {
-      setVisible(false);
-      try {
-        localStorage.setItem(HUSTLE_DISMISS_KEY, '1');
-      } catch {}
-    }, 400);
+    setTimeout(() => setVisible(false), 400);
   }, []);
 
   useEffect(() => {
-    if (!visible) return;
     const timer = setTimeout(handleClose, 5000);
     return () => clearTimeout(timer);
-  }, [visible, handleClose]);
+  }, [handleClose]);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {

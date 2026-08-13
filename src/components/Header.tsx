@@ -5,6 +5,7 @@ import { COMPANY } from '@/data/site';
 
 const links = [
   { label: 'Home', path: '/' },
+  { label: 'Services', path: '/services' },
   { label: 'About', path: '/about' },
   { label: 'Contact', path: '/contact' },
 ];
