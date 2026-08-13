@@ -5,9 +5,10 @@ import { GalleryItem } from '@/data/site';
 interface Props {
   images: GalleryItem[];
   vertical?: boolean;
+  contain?: boolean;
 }
 
-const ImageCarousel: React.FC<Props> = ({ images, vertical = false }) => {
+const ImageCarousel: React.FC<Props> = ({ images, vertical = false, contain = false }) => {
   const [page, setPage] = useState(0);
   const [paused, setPaused] = useState(false);
   const timerRef = useRef<ReturnType<typeof setInterval>>();
@@ -49,7 +50,7 @@ const ImageCarousel: React.FC<Props> = ({ images, vertical = false }) => {
                   <a key={i} href={item.link} target="_blank" rel="noopener noreferrer"
                     className="group relative rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
                     <img src={item.url} alt={`Gallery ${pIdx * perPage + i + 1}`} loading="lazy"
-                      className={`w-full aspect-[4/3] object-cover ${vertical ? 'rounded-lg' : ''}`} />
+                      className={`w-full aspect-[4/3] ${contain ? 'object-contain p-2 bg-white' : 'object-cover'} ${vertical ? 'rounded-lg' : ''}`} />
                     <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center">
                       <ExternalLink size={24} className="text-white opacity-0 group-hover:opacity-100 transition-opacity" />
                     </div>
@@ -57,7 +58,7 @@ const ImageCarousel: React.FC<Props> = ({ images, vertical = false }) => {
                 ) : (
                   <div key={i} className="rounded-lg overflow-hidden shadow-sm">
                     <img src={item.url} alt={`Gallery ${pIdx * perPage + i + 1}`} loading="lazy"
-                      className={`w-full aspect-[4/3] object-cover ${vertical ? 'rounded-lg' : ''}`} />
+                      className={`w-full aspect-[4/3] ${contain ? 'object-contain p-2 bg-white' : 'object-cover'} ${vertical ? 'rounded-lg' : ''}`} />
                   </div>
                 )
               ))}
