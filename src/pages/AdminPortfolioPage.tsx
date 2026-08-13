@@ -107,8 +107,9 @@ const AdminPortfolioPage: React.FC = () => {
 
   const saveSlider = async () => {
     setSaving(true);
+    const errors: string[] = [];
 
-    await supabase.from('ad_carousel_settings').upsert(
+    const { error: settingsError } = await supabase.from('ad_carousel_settings').upsert(
       [
         { key: 'web_effect', value: sliderSettings.web_effect },
         { key: 'web_scroll_interval_seconds', value: sliderSettings.web_scroll_interval_seconds },
@@ -116,6 +117,7 @@ const AdminPortfolioPage: React.FC = () => {
       ],
       { onConflict: 'key' }
     );
+    if (settingsError) errors.push(`Settings: ${settingsError.message}`);
 
     const updatedSites = [...sliderSites];
     for (let i = 0; i < updatedSites.length; i++) {
@@ -132,9 +134,13 @@ const AdminPortfolioPage: React.FC = () => {
           })
           .select()
           .single();
-        if (!error && data) updatedSites[i] = { ...site, id: data.id as string };
+        if (error) {
+          errors.push(`${site.title || 'New site'}: ${error.message}`);
+        } else if (data) {
+          updatedSites[i] = { ...site, id: data.id as string };
+        }
       } else {
-        await supabase
+        const { error } = await supabase
           .from('portfolio_sites')
           .update({
             title: site.title,
@@ -144,18 +150,26 @@ const AdminPortfolioPage: React.FC = () => {
             sort_order: site.sort_order,
           })
           .eq('id', site.id);
+        if (error) errors.push(`${site.title || site.id}: ${error.message}`);
       }
     }
 
     for (const id of deletedSiteIds) {
       if (!id.startsWith('new-')) {
-        await supabase.from('portfolio_sites').delete().eq('id', id);
+        const { error } = await supabase.from('portfolio_sites').delete().eq('id', id);
+        if (error) errors.push(`Delete ${id}: ${error.message}`);
       }
     }
 
     setDeletedSiteIds([]);
     setSliderSites(updatedSites);
     setSaving(false);
+
+    if (errors.length > 0) {
+      alert('Some changes were not saved:\n\n' + errors.join('\n'));
+      return;
+    }
+
     setSaved(true);
     setTimeout(() => setSaved(false), 2000);
   };
