@@ -42,7 +42,7 @@ const Services: React.FC = () => {
           {services.map((s) => (
             <button
               key={s.id}
-              onClick={() => navigate(`/services/${s.id}`)}
+              onClick={() => navigate(`/contact?service=${encodeURIComponent(s.title)}`)}
               className="group text-left bg-white rounded-2xl overflow-hidden border border-slate-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all"
             >
               <div className="aspect-[16/9] rounded-xl overflow-hidden relative">
@@ -55,7 +55,7 @@ const Services: React.FC = () => {
               <div className="p-5">
                 <p className="text-slate-600 text-sm leading-relaxed">{s.desc}</p>
                 <span className="mt-3 inline-flex items-center gap-1.5 text-[#4a90e2] font-semibold text-sm group-hover:gap-2.5 transition-all">
-                  Learn More <ArrowRight size={15} />
+                  Enquire <ArrowRight size={15} />
                 </span>
               </div>
             </button>
