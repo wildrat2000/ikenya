@@ -150,17 +150,13 @@ const WebsitePortfolioSlider: React.FC = () => {
           onMouseLeave={() => setPaused(false)}
         >
           <div className="relative group">
-            <div
-              className={`relative w-full overflow-hidden rounded-2xl bg-slate-200 aspect-[4/3] sm:aspect-[16/9] md:aspect-[7/2] ${
-                settings.effect === 'fade' ? '' : 'ring-1 ring-slate-200'
-              }`}
-            >
+            <div className="relative w-full aspect-[4/3] sm:aspect-[16/10] md:aspect-[21/9]">
               {settings.effect === 'fade' ? (
                 <div className="relative h-full w-full">
                   {groups.map((group, gi) => (
                     <div
                       key={gi}
-                      className={`absolute inset-0 flex transition-opacity ${
+                      className={`absolute inset-0 flex items-center justify-center -mx-1.5 sm:-mx-2 transition-opacity ${
                         gi === currentPage ? 'opacity-100' : 'opacity-0 pointer-events-none'
                       }`}
                       style={transitionStyle}
@@ -184,7 +180,7 @@ const WebsitePortfolioSlider: React.FC = () => {
                   {groups.map((group, gi) => (
                     <div
                       key={gi}
-                      className={`flex h-full min-w-0 shrink-0 grow-0 basis-full transition-all ${
+                      className={`flex h-full min-w-0 shrink-0 grow-0 basis-full items-center justify-center -mx-1.5 sm:-mx-2 transition-all ${
                         settings.effect === 'coverflow' && gi !== currentPage
                           ? 'scale-[0.95] opacity-80'
                           : ''
@@ -251,16 +247,24 @@ const SlideCard: React.FC<{ website: Website }> = ({ website }) => {
   ) : (
     <div className={`h-full w-full bg-gradient-to-br ${getPreviewPalette(website.title)}`}>
       <div className="flex h-full items-center justify-center">
-        <span className="text-5xl font-black tracking-tight text-white/90">
+        <span className="text-4xl font-black tracking-tight text-white/90">
           {getInitials(website.title)}
         </span>
       </div>
     </div>
   );
 
+  const tile = (
+    <div className="relative h-full w-full overflow-hidden rounded-xl sm:rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm transition-all duration-300 group-hover:-translate-y-1.5 group-hover:shadow-xl group-hover:ring-slate-300">
+      {image}
+    </div>
+  );
+
   if (!website.url) {
     return (
-      <div className="group relative h-full min-w-0 flex-1 overflow-hidden">{image}</div>
+      <div className="relative h-full w-full sm:w-1/2 md:w-1/3 px-1.5 sm:px-2">
+        <div className="group h-full w-full">{tile}</div>
+      </div>
     );
   }
 
@@ -269,13 +273,12 @@ const SlideCard: React.FC<{ website: Website }> = ({ website }) => {
       href={website.url}
       target="_blank"
       rel="noopener noreferrer"
-      className="group relative h-full min-w-0 flex-1 overflow-hidden"
+      className="group relative h-full w-full sm:w-1/2 md:w-1/3 px-1.5 sm:px-2 block"
     >
-      {image}
-      <div className="absolute inset-0 bg-slate-950/0 transition-colors duration-300 group-hover:bg-slate-950/40" />
-      <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-        <span className="flex items-center justify-center rounded-full bg-white text-[#1a1f3a] shadow-lg">
-          <ExternalLink size={22} className="m-3.5" />
+      {tile}
+      <div className="pointer-events-none absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+        <span className="flex items-center justify-center rounded-full bg-[#1a1f3a]/85 text-white shadow-lg backdrop-blur-sm">
+          <ExternalLink size={20} className="m-3" />
         </span>
       </div>
     </a>
