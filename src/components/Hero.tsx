@@ -17,6 +17,11 @@ const Hero: React.FC = () => {
   }, []);
 
   useEffect(() => {
+    const timer = setTimeout(handleClose, 5000);
+    return () => clearTimeout(timer);
+  }, [handleClose]);
+
+  useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') handleClose();
     };
@@ -28,7 +33,7 @@ const Hero: React.FC = () => {
     <section id="hero" className="min-h-screen flex items-center bg-[#1a1f3a] relative">
       {visible && (
         <div
-          className={`fixed right-4 lg:right-8 top-1/2 -translate-y-1/2 z-50 w-72 lg:w-96 rounded-xl overflow-hidden shadow-2xl ${closing ? 'animate-fly-out-right' : 'animate-fly-in-right'}`}
+          className={`fixed right-4 lg:right-8 top-1/2 -translate-y-1/2 z-50 w-[230px] lg:w-[300px] rounded-xl overflow-hidden shadow-2xl ${closing ? 'animate-fly-out-right' : 'animate-fly-in-right'}`}
         >
           <button onClick={handleClose}
             className="absolute top-3 right-3 z-10 w-10 h-10 rounded-full bg-black/40 hover:bg-black/60 text-white flex items-center justify-center transition-colors"
@@ -39,9 +44,9 @@ const Hero: React.FC = () => {
             <div className="relative aspect-[16/10]">
               <img src="/electrician.jpg" alt="" loading="lazy" className="absolute inset-0 w-full h-full object-cover" />
               <div className="absolute inset-0 bg-black/50" />
-              <div className="absolute inset-0 flex flex-col justify-center items-center px-4 text-center">
-                <span className="text-white text-4xl lg:text-6xl font-['Changa_One'] tracking-wide">Looking for a Hustle?</span>
-                <span className="text-[#00b894] text-xl lg:text-2xl font-['Changa_One'] mt-4">Jobs Portal &rarr;</span>
+              <div className="absolute inset-0 flex flex-col justify-center items-center px-3 text-center">
+                <span className="text-white text-xl lg:text-2xl font-['Changa_One'] tracking-wide leading-snug">Looking for a Hustle?</span>
+                <span className="text-[#00b894] text-sm lg:text-base font-['Changa_One'] mt-2">Jobs Portal &rarr;</span>
               </div>
             </div>
           </a>

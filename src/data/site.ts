@@ -20,6 +20,17 @@ export interface GalleryItem {
   link?: string;
 }
 
+export const SERVICE_SKILLS: string[] = [
+  'Microsoft 365',
+  'SharePoint',
+  'Network Infrastructure',
+  'Systems Administration',
+  'Help Desk',
+  'Cloud Solutions',
+  'Security & Compliance',
+  'Server Deployment',
+];
+
 export interface Service {
   id: string;
   title: string;

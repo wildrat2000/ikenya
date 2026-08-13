@@ -1,7 +1,7 @@
 import React from 'react';
 import Header from './Header';
 import Footer from './Footer';
-import WhatsAppButton from './WhatsAppButton';
+import ChatWidget from './ChatWidget';
 
 const AppLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
@@ -9,7 +9,7 @@ const AppLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       <Header />
       <main>{children}</main>
       <Footer />
-      <WhatsAppButton />
+      <ChatWidget />
     </div>
   );
 };

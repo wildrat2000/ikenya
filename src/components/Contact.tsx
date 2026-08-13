@@ -1,14 +1,21 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Mail, Phone, MapPin, Calendar, Loader2, CheckCircle2 } from 'lucide-react';
-import { COMPANY, SERVICES } from '@/data/site';
+import { useSearchParams } from 'react-router-dom';
+import { COMPANY, SERVICES, SERVICE_SKILLS } from '@/data/site';
 import { supabase } from '@/lib/supabase';
 import BookingModal from './BookingModal';
 
 const Contact: React.FC = () => {
+  const [searchParams] = useSearchParams();
   const [form, setForm] = useState({ name: '', email: '', phone: '', service: '', message: '' });
   const [sms, setSms] = useState(true);
   const [status, setStatus] = useState<'idle' | 'loading' | 'done' | 'error'>('idle');
   const [showBooking, setShowBooking] = useState(false);
+
+  useEffect(() => {
+    const service = searchParams.get('service');
+    if (service) setForm((prev) => ({ ...prev, service }));
+  }, [searchParams]);
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -121,6 +128,14 @@ const Contact: React.FC = () => {
                   className="mt-1 w-full px-4 py-3 rounded-lg border border-slate-200 focus:border-[#4a90e2] focus:ring-2 focus:ring-[#4a90e2]/20 outline-none bg-white"
                 >
                   <option value="">Select a service</option>
+                  {form.service &&
+                    !SERVICE_SKILLS.includes(form.service) &&
+                    !SERVICES.some((s) => s.title === form.service) && (
+                      <option value={form.service}>{form.service}</option>
+                    )}
+                  {SERVICE_SKILLS.map((s) => (
+                    <option key={s} value={s}>{s}</option>
+                  ))}
                   {SERVICES.map((s) => (
                     <option key={s.id} value={s.title}>{s.title}</option>
                   ))}

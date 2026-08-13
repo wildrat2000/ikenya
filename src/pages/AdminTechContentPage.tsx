@@ -4,24 +4,29 @@ import { Loader2, Save, Plus, Trash2, X } from 'lucide-react';
 import AdminLayout from '@/components/AdminLayout';
 
 type Testimonial = { quote: string; name: string; role: string };
+type Website = { id: string; title: string; url: string; description: string };
 
 const AdminTechContentPage: React.FC = () => {
-  const [tab, setTab] = useState<'tech' | 'testimonials'>('tech');
+  const [tab, setTab] = useState<'tech' | 'testimonials' | 'websites'>('tech');
   const [techStack, setTechStack] = useState<string[]>([]);
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
+  const [websites, setWebsites] = useState<Website[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
   const [newTech, setNewTech] = useState('');
   const [newTest, setNewTest] = useState<Testimonial>({ quote: '', name: '', role: '' });
+  const [newWebsite, setNewWebsite] = useState<Website>({ id: '', title: '', url: '', description: '' });
 
   useEffect(() => {
     Promise.all([
       supabase.from('page_content').select('content').eq('page', 'technology').eq('section', 'tech_stack').single(),
       supabase.from('page_content').select('content').eq('page', 'technology').eq('section', 'testimonials').single(),
-    ]).then(([techRes, testRes]) => {
+      supabase.from('page_content').select('content').eq('page', 'technology').eq('section', 'websites').single(),
+    ]).then(([techRes, testRes, webRes]) => {
       if (techRes.data?.content) setTechStack(techRes.data.content);
       if (testRes.data?.content) setTestimonials(testRes.data.content);
+      if (webRes.data?.content) setWebsites(webRes.data.content);
       setLoading(false);
     });
   }, []);
@@ -31,6 +36,7 @@ const AdminTechContentPage: React.FC = () => {
     await Promise.all([
       supabase.from('page_content').upsert({ page: 'technology', section: 'tech_stack', content: techStack }, { onConflict: 'page, section' }),
       supabase.from('page_content').upsert({ page: 'technology', section: 'testimonials', content: testimonials }, { onConflict: 'page, section' }),
+      supabase.from('page_content').upsert({ page: 'technology', section: 'websites', content: websites }, { onConflict: 'page, section' }),
     ]);
     setSaving(false);
     setSaved(true);
@@ -53,6 +59,14 @@ const AdminTechContentPage: React.FC = () => {
 
   const removeTest = (i: number) => setTestimonials(prev => prev.filter((_, idx) => idx !== i));
 
+  const addWebsite = () => {
+    if (!newWebsite.title.trim() || !newWebsite.url.trim()) return;
+    setWebsites(prev => [...prev, { ...newWebsite, id: Date.now().toString() }]);
+    setNewWebsite({ id: '', title: '', url: '', description: '' });
+  };
+
+  const removeWebsite = (id: string) => setWebsites(prev => prev.filter(w => w.id !== id));
+
   return (
     <AdminLayout>
       <div className="flex items-center justify-between mb-6">
@@ -64,7 +78,7 @@ const AdminTechContentPage: React.FC = () => {
         </button>
       </div>
 
-      <div className="flex gap-3 mb-6">
+      <div className="flex gap-3 mb-6 flex-wrap">
         <button onClick={() => setTab('tech')}
           className={`px-5 py-2.5 rounded-lg text-sm font-medium transition-colors ${tab === 'tech' ? 'bg-[#1a1f3a] text-white' : 'bg-white text-slate-700 hover:bg-slate-100'}`}>
           Tech Stack
@@ -72,6 +86,10 @@ const AdminTechContentPage: React.FC = () => {
         <button onClick={() => setTab('testimonials')}
           className={`px-5 py-2.5 rounded-lg text-sm font-medium transition-colors ${tab === 'testimonials' ? 'bg-[#1a1f3a] text-white' : 'bg-white text-slate-700 hover:bg-slate-100'}`}>
           Testimonials
+        </button>
+        <button onClick={() => setTab('websites')}
+          className={`px-5 py-2.5 rounded-lg text-sm font-medium transition-colors ${tab === 'websites' ? 'bg-[#1a1f3a] text-white' : 'bg-white text-slate-700 hover:bg-slate-100'}`}>
+          Websites
         </button>
       </div>
 
@@ -99,7 +117,7 @@ const AdminTechContentPage: React.FC = () => {
             ))}
           </div>
         </div>
-      ) : (
+      ) : tab === 'testimonials' ? (
         <div className="space-y-4">
           <div className="bg-white rounded-xl shadow p-6">
             <h3 className="text-lg font-bold text-slate-800 mb-4">Add Testimonial</h3>
@@ -135,9 +153,42 @@ const AdminTechContentPage: React.FC = () => {
             </div>
           ))}
         </div>
+      ) : (
+        <div className="space-y-4">
+          <div className="bg-white rounded-xl shadow p-6">
+            <h3 className="text-lg font-bold text-slate-800 mb-4">Add Website</h3>
+            <div className="space-y-3">
+              <input value={newWebsite.title} onChange={e => setNewWebsite(p => ({ ...p, title: e.target.value }))}
+                placeholder="Website Title" className="w-full px-4 py-2.5 border border-slate-200 rounded-lg text-sm outline-none focus:border-[#4a90e2]" />
+              <input value={newWebsite.url} onChange={e => setNewWebsite(p => ({ ...p, url: e.target.value }))}
+                placeholder="Website URL (https://...)" className="w-full px-4 py-2.5 border border-slate-200 rounded-lg text-sm outline-none focus:border-[#4a90e2]" />
+              <textarea value={newWebsite.description} onChange={e => setNewWebsite(p => ({ ...p, description: e.target.value }))}
+                placeholder="Website Description" rows={2}
+                className="w-full px-4 py-2.5 border border-slate-200 rounded-lg text-sm outline-none focus:border-[#4a90e2] resize-none" />
+              <button onClick={addWebsite}
+                className="flex items-center gap-1.5 bg-[#4a90e2] hover:bg-[#3a7bc8] text-white px-4 py-2.5 rounded-lg text-sm font-medium transition-colors">
+                <Plus size={16} /> Add Website
+              </button>
+            </div>
+          </div>
+
+          {websites.map((w) => (
+            <div key={w.id} className="bg-white rounded-xl shadow p-5 flex items-start gap-4">
+              <div className="flex-1 min-w-0">
+                <p className="font-semibold text-slate-800 text-sm">{w.title}</p>
+                <p className="text-xs text-slate-500 truncate mt-1">{w.url}</p>
+                <p className="text-slate-600 text-sm leading-relaxed mt-2">{w.description}</p>
+              </div>
+              <button onClick={() => removeWebsite(w.id)} className="p-2 text-slate-400 hover:text-red-500 transition-colors shrink-0">
+                <Trash2 size={16} />
+              </button>
+            </div>
+          ))}
+        </div>
       )}
     </AdminLayout>
   );
 };
+
 
 export default AdminTechContentPage;
