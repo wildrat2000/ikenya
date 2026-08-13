@@ -70,12 +70,12 @@ const ImageCarousel: React.FC<Props> = ({ images, vertical = false }) => {
             {vertical ? (
               <>
                 <button onClick={prev}
-                  className="absolute top-2 left-1/2 -translate-x-1/2 bg-white/80 hover:bg-white rounded-full p-1.5 shadow-md transition-colors z-10">
-                  <ChevronUp size={16} className="text-[#1a1f3a]" />
+                  className="absolute top-2 left-1/2 -translate-x-1/2 bg-slate-900/80 hover:bg-slate-900 rounded-full p-1.5 shadow-md transition-colors z-10">
+                  <ChevronUp size={16} className="text-white" />
                 </button>
                 <button onClick={next}
-                  className="absolute bottom-2 left-1/2 -translate-x-1/2 bg-white/80 hover:bg-white rounded-full p-1.5 shadow-md transition-colors z-10">
-                  <ChevronDown size={16} className="text-[#1a1f3a]" />
+                  className="absolute bottom-2 left-1/2 -translate-x-1/2 bg-slate-900/80 hover:bg-slate-900 rounded-full p-1.5 shadow-md transition-colors z-10">
+                  <ChevronDown size={16} className="text-white" />
                 </button>
               </>
             ) : (

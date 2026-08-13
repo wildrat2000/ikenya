@@ -145,9 +145,9 @@ const Services: React.FC = () => {
               </div>
 
               {hosting.gallery?.length > 0 && (
-                <div className="w-40 shrink-0 flex flex-col border-l border-white/10 pl-5">
-                  <h4 className="text-white font-bold text-sm mb-3">Our Providers</h4>
-                  <div className="flex-1 min-h-0">
+                <div className="w-44 shrink-0 flex flex-col bg-white rounded-2xl p-3">
+                  <h4 className="text-[#1a1f3a] font-bold text-sm mb-3">Our Providers</h4>
+                  <div className="flex-1 min-h-0 rounded-lg overflow-hidden">
                     <ImageCarousel vertical images={hosting.gallery} />
                   </div>
                 </div>
