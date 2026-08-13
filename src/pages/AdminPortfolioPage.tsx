@@ -10,6 +10,7 @@ import {
   ArrowUp,
   ArrowDown,
   Trash2,
+  Camera,
 } from 'lucide-react';
 import AdminLayout from '@/components/AdminLayout';
 
@@ -116,15 +117,22 @@ const AdminPortfolioPage: React.FC = () => {
       { onConflict: 'key' }
     );
 
-    for (const site of sliderSites) {
+    const updatedSites = [...sliderSites];
+    for (let i = 0; i < updatedSites.length; i++) {
+      const site = updatedSites[i];
       if (site.id.startsWith('new-')) {
-        await supabase.from('portfolio_sites').insert({
-          title: site.title,
-          url: site.url || null,
-          description: site.description,
-          image_url: site.image_url || null,
-          sort_order: site.sort_order,
-        });
+        const { data, error } = await supabase
+          .from('portfolio_sites')
+          .insert({
+            title: site.title,
+            url: site.url || null,
+            description: site.description,
+            image_url: site.image_url || null,
+            sort_order: site.sort_order,
+          })
+          .select()
+          .single();
+        if (!error && data) updatedSites[i] = { ...site, id: data.id as string };
       } else {
         await supabase
           .from('portfolio_sites')
@@ -146,7 +154,7 @@ const AdminPortfolioPage: React.FC = () => {
     }
 
     setDeletedSiteIds([]);
-    setSliderSites(prev => prev.map(s => s.id.startsWith('new-') ? { ...s, id: `saved-${Date.now()}-${s.id}` } : s));
+    setSliderSites(updatedSites);
     setSaving(false);
     setSaved(true);
     setTimeout(() => setSaved(false), 2000);
@@ -184,6 +192,20 @@ const AdminPortfolioPage: React.FC = () => {
     if (error) { alert('Upload failed: ' + error.message); return; }
     const { data: { publicUrl } } = supabase.storage.from('portfolio-images').getPublicUrl(path);
     updateSliderField(id, 'image_url', publicUrl);
+  };
+
+  const capturePreview = async (id: string) => {
+    const site = sliderSites.find(s => s.id === id);
+    if (!site?.url) { alert('Enter a website URL first, then capture its preview.'); return; }
+    try {
+      const res = await fetch(`https://api.microlink.io/?url=${encodeURIComponent(site.url)}&screenshot=true&meta=false`);
+      const json = await res.json();
+      const shot = json?.data?.screenshot?.url;
+      if (!shot) { alert('Could not capture a preview for this site.'); return; }
+      updateSliderField(id, 'image_url', shot);
+    } catch {
+      alert('Could not capture a preview for this site.');
+    }
   };
 
   const updateSliderField = (id: string, field: keyof SliderSite, value: string | number) => {
@@ -427,15 +449,19 @@ const AdminPortfolioPage: React.FC = () => {
                     <input value={site.url} onChange={e => updateSliderField(site.id, 'url', e.target.value)}
                       placeholder="Website URL (optional — leave empty for apps not online)"
                       className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm outline-none focus:border-[#4a90e2]" />
-                    <div className="flex gap-2">
+                    <div className="flex gap-2 flex-wrap">
                       <input value={site.image_url} onChange={e => updateSliderField(site.id, 'image_url', e.target.value)}
                         placeholder="Image URL (optional)"
-                        className="flex-1 px-3 py-2 border border-slate-200 rounded-lg text-sm outline-none focus:border-[#4a90e2]" />
+                        className="flex-1 min-w-[160px] px-3 py-2 border border-slate-200 rounded-lg text-sm outline-none focus:border-[#4a90e2]" />
                       <label className="flex items-center gap-2 bg-white border border-slate-200 hover:border-[#4a90e2] text-slate-700 px-3 py-2 rounded-lg text-sm font-medium cursor-pointer transition-colors shrink-0">
                         <Upload size={16} /> Upload
                         <input type="file" accept="image/*" className="hidden"
                           onChange={e => { const f = e.target.files?.[0]; if (f) uploadSliderImage(site.id, f); }} />
                       </label>
+                      <button onClick={() => capturePreview(site.id)}
+                        className="flex items-center gap-2 bg-white border border-slate-200 hover:border-[#4a90e2] text-slate-700 px-3 py-2 rounded-lg text-sm font-medium transition-colors shrink-0">
+                        <Camera size={16} /> Capture Preview
+                      </button>
                     </div>
                   </div>
 
