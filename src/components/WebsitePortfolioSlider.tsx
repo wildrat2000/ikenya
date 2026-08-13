@@ -136,9 +136,9 @@ const WebsitePortfolioSlider: React.FC = () => {
   const transitionStyle: React.CSSProperties = { transitionDuration: `${settings.duration}s` };
 
   return (
-    <section id="portfolio-websites" className="pt-10 pb-16 lg:pt-14 lg:pb-20 bg-[#f8fafc]">
+    <section id="portfolio-websites" className="pt-2 pb-14 lg:pt-4 lg:pb-16 bg-[#f8fafc]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        <div className="mx-auto mb-8 max-w-3xl text-center">
+        <div className="mx-auto mb-6 max-w-3xl text-center">
           <span className="text-sm font-semibold uppercase tracking-[0.22em] text-[#4a90e2]">
             Our Work
           </span>
