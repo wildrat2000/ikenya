@@ -254,16 +254,21 @@ const SlideCard: React.FC<{ website: Website }> = ({ website }) => {
     </div>
   );
 
-  const tile = (
-    <div className="relative h-full w-full overflow-hidden rounded-xl sm:rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm transition-all duration-300 group-hover:-translate-y-1.5 group-hover:shadow-xl group-hover:ring-slate-300">
-      {image}
+  const caption = (
+    <div className="shrink-0 border-t border-slate-100 bg-white px-3 py-2 sm:py-2.5">
+      <p className="truncate text-xs sm:text-sm font-semibold text-[#1a1f3a]">
+        {website.title}
+      </p>
     </div>
   );
 
   if (!website.url) {
     return (
       <div className="relative h-full w-full sm:w-1/2 md:w-1/3 px-1.5 sm:px-2">
-        <div className="group h-full w-full">{tile}</div>
+        <div className="group flex h-full w-full flex-col overflow-hidden rounded-xl sm:rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm">
+          <div className="relative min-h-0 flex-1 overflow-hidden">{image}</div>
+          {caption}
+        </div>
       </div>
     );
   }
@@ -275,8 +280,11 @@ const SlideCard: React.FC<{ website: Website }> = ({ website }) => {
       rel="noopener noreferrer"
       className="group relative h-full w-full sm:w-1/2 md:w-1/3 px-1.5 sm:px-2 block"
     >
-      {tile}
-      <div className="pointer-events-none absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+      <div className="flex h-full w-full flex-col overflow-hidden rounded-xl sm:rounded-2xl bg-white ring-1 ring-slate-200 shadow-sm transition-all duration-300 group-hover:-translate-y-1.5 group-hover:shadow-xl group-hover:ring-slate-300">
+        <div className="relative min-h-0 flex-1 overflow-hidden">{image}</div>
+        {caption}
+      </div>
+      <div className="pointer-events-none absolute inset-x-0 top-0 bottom-auto flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
         <span className="flex items-center justify-center rounded-full bg-[#1a1f3a]/85 text-white shadow-lg backdrop-blur-sm">
           <ExternalLink size={20} className="m-3" />
         </span>
