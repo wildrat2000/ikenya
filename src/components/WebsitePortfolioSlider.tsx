@@ -136,9 +136,9 @@ const WebsitePortfolioSlider: React.FC = () => {
   const transitionStyle: React.CSSProperties = { transitionDuration: `${settings.duration}s` };
 
   return (
-    <section id="portfolio-websites" className="py-20 lg:py-28 bg-[#f8fafc]">
+    <section id="portfolio-websites" className="pt-10 pb-16 lg:pt-14 lg:pb-20 bg-[#f8fafc]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        <div className="mx-auto mb-12 max-w-3xl text-center">
+        <div className="mx-auto mb-8 max-w-3xl text-center">
           <span className="text-sm font-semibold uppercase tracking-[0.22em] text-[#4a90e2]">
             Our Work
           </span>
@@ -150,7 +150,7 @@ const WebsitePortfolioSlider: React.FC = () => {
           onMouseLeave={() => setPaused(false)}
         >
           <div className="relative group">
-            <div className="relative w-full aspect-[4/3] sm:aspect-[16/10] md:aspect-[21/9]">
+            <div className="relative w-full aspect-[5/3] sm:aspect-[2/1] md:aspect-[3/1]">
               {settings.effect === 'fade' ? (
                 <div className="relative h-full w-full">
                   {groups.map((group, gi) => (

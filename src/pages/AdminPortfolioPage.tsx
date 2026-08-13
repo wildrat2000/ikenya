@@ -212,7 +212,7 @@ const AdminPortfolioPage: React.FC = () => {
     const site = sliderSites.find(s => s.id === id);
     if (!site?.url) { alert('Enter a website URL first, then capture its preview.'); return; }
     try {
-      const res = await fetch(`https://api.microlink.io/?url=${encodeURIComponent(site.url)}&screenshot=true&viewport=1280x800&meta=false`);
+      const res = await fetch(`https://api.microlink.io/?url=${encodeURIComponent(site.url)}&screenshot=true&screenshot.fullPage=true&viewport=1440x900&deviceScaleFactor=2&waitUntil=networkidle2&meta=false`);
       const json = await res.json();
       const shot = json?.data?.screenshot?.url;
       if (!shot) { alert('Could not capture a preview for this site.'); return; }
