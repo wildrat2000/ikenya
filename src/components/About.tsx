@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ShieldCheck, Server, Wifi, Users, Zap, X, Calendar, Globe, Users2, MonitorPlay, Database, HardDrive, Building2, ExternalLink, Mail, FileText, Terminal } from 'lucide-react';
+import { ShieldCheck, Server, Wifi, Users, Zap, X, Calendar, Globe, Users2, MonitorPlay, Database, HardDrive, Building2, ExternalLink, Mail, FileText, Terminal, Phone, Wrench } from 'lucide-react';
 import { SERVICE_SKILLS } from '@/data/site';
 import { SIM_LOGO } from '@/data/simLogo';
 import { ACT_LOGO } from '@/data/actLogo';
@@ -9,7 +9,7 @@ import { DAI_LOGO, AFEX_LOGO } from '@/data/workLogos';
 const roles = [
   'Microsoft 365 & SharePoint Online Specialist',
   'Systems Administrator',
-  'Infrastructure Consultant',
+  'Connectivity Infrastructure Support',
   'Help Desk Specialist',
   'Remote Contractor',
 ];
@@ -94,6 +94,26 @@ const roleModals = {
       },
     ],
   },
+  wananchi: {
+    gradient: 'from-[#059669] via-[#10b981] to-[#34d399]',
+    accent: 'from-[#059669] to-[#34d399]',
+    positions: [
+      {
+        title: 'Customer Service Coordinator / Network Technician',
+        company: 'Wananchi Online',
+        dates: 'Oct 2000 – Jan 2005',
+        summary:
+          'Delivered helpdesk and on-site technical support for dial-up and dedicated connectivity clients. Led a team of 10 service executives to keep customers connected and satisfied.',
+        highlights: [
+          { icon: Phone, title: 'Helpdesk', desc: 'First-line helpdesk delivery for internet connectivity clients.' },
+          { icon: Wrench, title: 'On-site Support', desc: 'On-site technical support for dial-up and dedicated clients.' },
+          { icon: Users2, title: 'Team of 10', desc: 'Led and coached a team of 10 service executives.' },
+          { icon: Wifi, title: 'Dial-up & Dedicated', desc: 'Supported dial-up and dedicated customer connections.' },
+        ],
+        footer: 'Early-career grounding in ISP customer support and connectivity infrastructure service delivery.',
+      },
+    ],
+  },
 };
 
 const values = [
@@ -105,7 +125,7 @@ const values = [
 
 const About: React.FC = () => {
   const navigate = useNavigate();
-  const [activeRole, setActiveRole] = useState<'sim' | 'pact' | 'helpdesk' | null>(null);
+  const [activeRole, setActiveRole] = useState<'sim' | 'pact' | 'helpdesk' | 'wananchi' | null>(null);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -115,8 +135,8 @@ const About: React.FC = () => {
     return () => document.removeEventListener('keydown', onKey);
   }, [activeRole]);
 
-  const roleKeyForIndex = (i: number): 'sim' | 'pact' | 'helpdesk' | null =>
-    i === 0 ? 'sim' : i === 1 ? 'pact' : i === 3 ? 'helpdesk' : null;
+  const roleKeyForIndex = (i: number): 'sim' | 'pact' | 'helpdesk' | 'wananchi' | null =>
+    i === 0 ? 'sim' : i === 1 ? 'pact' : i === 2 ? 'wananchi' : i === 3 ? 'helpdesk' : null;
 
   return (
     <section id="about" className="py-20 lg:py-28 bg-[#1a1f3a] text-white">
@@ -216,7 +236,13 @@ const About: React.FC = () => {
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-4">
                       <div className="w-16 h-16 rounded-2xl bg-white p-2 shadow-lg flex items-center justify-center shrink-0">
-                        <img src={pos.logo} alt={`${pos.company} logo`} className="w-full h-full object-contain" />
+                        {pos.logo ? (
+                          <img src={pos.logo} alt={`${pos.company} logo`} className="w-full h-full object-contain" />
+                        ) : (
+                          <div className={`w-full h-full rounded-xl bg-gradient-to-br ${roleModals[activeRole].accent} flex items-center justify-center`}>
+                            <Wifi size={28} className="text-white" />
+                          </div>
+                        )}
                       </div>
                       <div>
                         {pos.location && (
