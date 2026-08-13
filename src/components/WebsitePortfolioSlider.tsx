@@ -246,7 +246,7 @@ const SlideCard: React.FC<{ website: Website }> = ({ website }) => {
       src={website.image_url}
       alt={website.title}
       loading="lazy"
-      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+      className="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
     />
   ) : (
     <div className={`h-full w-full bg-gradient-to-br ${getPreviewPalette(website.title)}`}>
