@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ShieldCheck, Server, Wifi, Users, Zap, X, Calendar, Globe, Users2, MonitorPlay, Database, HardDrive, Building2, ExternalLink, Mail, FileText, Terminal, Phone, Wrench } from 'lucide-react';
+import { ShieldCheck, Server, Wifi, Users, Zap, X, Calendar, Globe, Users2, MonitorPlay, Database, HardDrive, Building2, ExternalLink, Mail, FileText, Terminal, Phone, Wrench, Cloud } from 'lucide-react';
 import { SERVICE_SKILLS } from '@/data/site';
 import { SIM_LOGO } from '@/data/simLogo';
 import { ACT_LOGO } from '@/data/actLogo';
 import { DAI_LOGO, AFEX_LOGO } from '@/data/workLogos';
+import { HOPELABS_LOGO } from '@/data/hopeLogo';
 
 const roles = [
   'Microsoft 365 & SharePoint Online Specialist',
@@ -114,6 +115,28 @@ const roleModals = {
       },
     ],
   },
+  hope: {
+    gradient: 'from-[#6366f1] via-[#8b5cf6] to-[#d946ef]',
+    accent: 'from-[#6366f1] to-[#d946ef]',
+    positions: [
+      {
+        logo: HOPELABS_LOGO,
+        location: '(Somalia)',
+        title: 'ICT Lead Consultant',
+        company: 'Hope Labs Group',
+        dates: 'May 2022 – Nov 2022',
+        summary:
+          'Built the ICT infrastructure for laboratory operations across 10 districts in Mogadishu. Managed virtual servers, email systems (Ubuntu/Zimbra), VOIP (Asterisk), LAN/Wi-Fi rollout, and AWS EC2 backup systems.',
+        highlights: [
+          { icon: Server, title: 'Virtual Servers', desc: 'Managed virtual server infrastructure for lab operations.' },
+          { icon: Mail, title: 'Email (Ubuntu/Zimbra)', desc: 'Deployed and administered Ubuntu/Zimbra email systems.' },
+          { icon: Phone, title: 'VOIP (Asterisk)', desc: 'Implemented and managed Asterisk VOIP phone systems.' },
+          { icon: Cloud, title: 'AWS EC2 Backups', desc: 'Configured AWS EC2 backup systems for data resilience.' },
+        ],
+        footer: 'Delivered end-to-end ICT infrastructure for healthcare laboratory operations across 10 districts in Mogadishu.',
+      },
+    ],
+  },
 };
 
 const values = [
@@ -125,7 +148,7 @@ const values = [
 
 const About: React.FC = () => {
   const navigate = useNavigate();
-  const [activeRole, setActiveRole] = useState<'sim' | 'pact' | 'helpdesk' | 'wananchi' | null>(null);
+  const [activeRole, setActiveRole] = useState<'sim' | 'pact' | 'helpdesk' | 'wananchi' | 'hope' | null>(null);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -135,8 +158,8 @@ const About: React.FC = () => {
     return () => document.removeEventListener('keydown', onKey);
   }, [activeRole]);
 
-  const roleKeyForIndex = (i: number): 'sim' | 'pact' | 'helpdesk' | 'wananchi' | null =>
-    i === 0 ? 'sim' : i === 1 ? 'pact' : i === 2 ? 'wananchi' : i === 3 ? 'helpdesk' : null;
+  const roleKeyForIndex = (i: number): 'sim' | 'pact' | 'helpdesk' | 'wananchi' | 'hope' | null =>
+    i === 0 ? 'sim' : i === 1 ? 'pact' : i === 2 ? 'wananchi' : i === 3 ? 'helpdesk' : i === 4 ? 'hope' : null;
 
   return (
     <section id="about" className="py-20 lg:py-28 bg-[#1a1f3a] text-white">
