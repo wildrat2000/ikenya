@@ -96,6 +96,8 @@ const AdminServicesPage: React.FC = () => {
     setUploadingGalleryId(null);
   };
 
+  const galleryLimit = (id: string) => (id === 'hosting' ? 0 : 4);
+
   return (
     <AdminLayout>
       <div className="flex items-center justify-between mb-6">
@@ -192,7 +194,8 @@ const AdminServicesPage: React.FC = () => {
                   <div>
                     <div className="flex items-center justify-between mb-1">
                       <span className="text-xs font-semibold text-slate-500 uppercase tracking-wide">
-                        Gallery Images <span className="text-slate-300 normal-case">({(s.gallery?.length || 0)}/4)</span>
+                        {s.id === 'hosting' ? 'Provider Logos' : 'Gallery Images'}{' '}
+                        <span className="text-slate-300 normal-case">({s.gallery?.length || 0}{galleryLimit(s.id) ? `/${galleryLimit(s.id)}` : ''})</span>
                       </span>
                       <div className="flex gap-2">
                         <input type="file" accept="image/*" className="hidden"
@@ -206,7 +209,7 @@ const AdminServicesPage: React.FC = () => {
                           className="flex items-center gap-1 text-xs text-[#4a90e2] font-semibold hover:text-[#3a7bc8] disabled:opacity-50">
                           <Upload size={12} /> Upload Image
                         </button>
-                        <button onClick={() => addGalleryItem(s.id)} disabled={(s.gallery?.length || 0) >= 4}
+                        <button onClick={() => addGalleryItem(s.id)} disabled={!!galleryLimit(s.id) && (s.gallery?.length || 0) >= galleryLimit(s.id)}
                           className="flex items-center gap-1 text-xs text-[#4a90e2] font-semibold hover:text-[#3a7bc8] disabled:opacity-50">
                           <Plus size={12} /> Add Image
                         </button>
