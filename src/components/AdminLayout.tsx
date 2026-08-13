@@ -27,7 +27,8 @@ const AdminLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         return;
       }
       supabase.from('profiles').select('role').eq('id', session.user.id).single().then(({ data }) => {
-        if (data?.role !== 'super_admin') {
+        const role = data?.role;
+        if (role !== 'admin' && role !== 'super_admin') {
           navigate('/admin');
           return;
         }
