@@ -123,6 +123,12 @@
 }
 .animate-fade-in { animation: fade-in 0.2s ease-out forwards; }
 
+@keyframes fly-in-bottom {
+  0% { opacity: 0; transform: translateY(16px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+.animate-fly-in-bottom { animation: fly-in-bottom 0.25s ease-out forwards; }
+
 .markdown-editor {
   @apply font-mono text-base leading-relaxed;
 }
