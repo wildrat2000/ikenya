@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { ArrowRight, X, Globe, Server, BadgeCheck, RefreshCcw } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/lib/supabase';
-import { SERVICES as FALLBACK } from '@/data/site';
+import { SERVICES as FALLBACK, GalleryItem } from '@/data/site';
+import ImageCarousel from '@/components/ImageCarousel';
 
 interface ServiceItem {
   id: string;
@@ -11,6 +12,7 @@ interface ServiceItem {
   points: string[];
   icon: string;
   img: string;
+  gallery: GalleryItem[];
 }
 
 const HOSTING_HIGHLIGHTS = [
@@ -132,6 +134,13 @@ const Services: React.FC = () => {
               <div className="mt-5 rounded-2xl bg-gradient-to-r from-[#0ea5e9]/20 to-[#6366f1]/20 border border-white/10 p-4 text-sm text-slate-300">
                 Let us handle your domain, hosting, and renewals so your website stays fast, secure, and always online.
               </div>
+
+              {hosting.gallery?.length > 0 && (
+                <div className="mt-5">
+                  <h4 className="text-white font-bold text-sm mb-3">Our Providers</h4>
+                  <ImageCarousel images={hosting.gallery} />
+                </div>
+              )}
 
               <button
                 onClick={() => { setActiveHosting(false); navigate(`/contact?service=${encodeURIComponent(hosting.title)}`); }}
