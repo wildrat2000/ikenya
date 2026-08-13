@@ -6,6 +6,7 @@ import { SIM_LOGO } from '@/data/simLogo';
 import { ACT_LOGO } from '@/data/actLogo';
 import { DAI_LOGO, AFEX_LOGO } from '@/data/workLogos';
 import { HOPELABS_LOGO } from '@/data/hopeLogo';
+import { WANANCHI_LOGO } from '@/data/wananchiLogo';
 
 const roles = [
   'Microsoft 365 & SharePoint Online Specialist',
@@ -100,6 +101,7 @@ const roleModals = {
     accent: 'from-[#059669] to-[#34d399]',
     positions: [
       {
+        logo: WANANCHI_LOGO,
         title: 'Customer Service Coordinator / Network Technician',
         company: 'Wananchi Online',
         dates: 'Oct 2000 – Jan 2005',
