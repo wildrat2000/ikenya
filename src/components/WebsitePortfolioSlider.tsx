@@ -1,14 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { ExternalLink } from 'lucide-react';
+import React, { useEffect, useState, useCallback } from 'react';
+import { ChevronLeft, ChevronRight, ExternalLink } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-  type CarouselApi,
-} from '@/components/ui/carousel';
 
 interface Website {
   id: string;
@@ -18,6 +10,14 @@ interface Website {
   image_url?: string | null;
   sort_order?: number;
 }
+
+interface SliderSettings {
+  effect: 'slide' | 'fade' | 'coverflow';
+  interval: number;
+  duration: number;
+}
+
+const DEFAULT_SETTINGS: SliderSettings = { effect: 'slide', interval: 5, duration: 0.8 };
 
 const previewPalette = [
   'from-[#4a90e2] via-[#1a1f3a] to-[#0f172a]',
@@ -42,43 +42,20 @@ const getInitials = (title: string) =>
     .toUpperCase() || 'IT';
 
 const FALLBACK_WEBSITES: Website[] = [
-  {
-    id: 'prefetch',
-    title: 'Prefetch Systems',
-    url: 'https://prefetchsystems.co.ke',
-    description: '',
-  },
-  {
-    id: 'market-color',
-    title: 'The Market Color Podcast',
-    url: 'https://themarketcolorpodcast.com',
-    description: '',
-  },
-  {
-    id: 'alcdj',
-    title: 'ALC DJ',
-    url: 'https://alcdj.org',
-    description: '',
-  },
-  {
-    id: 'itukarua',
-    title: 'Itukarua',
-    url: 'https://itukarua3.vercel.app',
-    description: '',
-  },
-  {
-    id: 'portfolio-five',
-    title: 'Future Launch',
-    url: 'https://example.com',
-    description: '',
-  },
+  { id: 'prefetch', title: 'Prefetch Systems', url: 'https://prefetchsystems.co.ke', description: '' },
+  { id: 'market-color', title: 'The Market Color Podcast', url: 'https://themarketcolorpodcast.com', description: '' },
+  { id: 'alcdj', title: 'ALC DJ', url: 'https://alcdj.org', description: '' },
+  { id: 'itukarua', title: 'Itukarua', url: 'https://itukarua3.vercel.app', description: '' },
+  { id: 'future-launch', title: 'Future Launch', url: '', description: '' },
 ];
 
 const WebsitePortfolioSlider: React.FC = () => {
   const [isMounted, setIsMounted] = useState(false);
   const [websites, setWebsites] = useState<Website[]>(FALLBACK_WEBSITES);
-  const [api, setApi] = useState<CarouselApi>();
+  const [settings, setSettings] = useState<SliderSettings>(DEFAULT_SETTINGS);
+  const [page, setPage] = useState(0);
   const [paused, setPaused] = useState(false);
+  const [perView, setPerView] = useState(3);
 
   useEffect(() => {
     setIsMounted(true);
@@ -93,7 +70,7 @@ const WebsitePortfolioSlider: React.FC = () => {
             .map((site: any) => ({
               id: site.id || `${site.title}-${site.sort_order ?? 0}`,
               title: site.title,
-              url: site.url || '#',
+              url: site.url || '',
               description: site.description || '',
               image_url: site.image_url || null,
               sort_order: site.sort_order ?? 0,
@@ -109,16 +86,54 @@ const WebsitePortfolioSlider: React.FC = () => {
       .catch(() => {
         setWebsites(FALLBACK_WEBSITES);
       });
+
+    supabase
+      .from('ad_carousel_settings')
+      .select('key,value')
+      .then(({ data, error }) => {
+        if (!error && data) {
+          const map: Record<string, string> = {};
+          data.forEach((r: any) => (map[r.key] = r.value));
+          setSettings({
+            effect: (map.web_effect as SliderSettings['effect']) || 'slide',
+            interval: parseFloat(map.web_scroll_interval_seconds) || 5,
+            duration: parseFloat(map.web_transition_duration_seconds) || 0.8,
+          });
+        }
+      })
+      .catch(() => {});
   }, []);
 
   useEffect(() => {
-    if (!api || paused || websites.length <= 1) return;
+    const update = () => {
+      const w = window.innerWidth;
+      setPerView(w < 640 ? 1 : w < 768 ? 2 : w < 1024 ? 3 : 5);
+    };
+    update();
+    window.addEventListener('resize', update);
+    return () => window.removeEventListener('resize', update);
+  }, []);
 
-    const timer = setInterval(() => api.scrollNext(), 4000);
+  const pages = Math.max(1, Math.ceil(websites.length / perView));
+  const currentPage = page >= pages ? 0 : page;
+
+  useEffect(() => {
+    if (paused || pages <= 1) return;
+    const timer = setInterval(() => setPage((p) => (p + 1) % pages), settings.interval * 1000);
     return () => clearInterval(timer);
-  }, [api, paused, websites.length]);
+  }, [paused, pages, settings.interval]);
+
+  const goPrev = useCallback(() => setPage((p) => (p - 1 + pages) % pages), [pages]);
+  const goNext = useCallback(() => setPage((p) => (p + 1) % pages), [pages]);
 
   if (!isMounted) return null;
+
+  const groups: Website[][] = [];
+  for (let i = 0; i < websites.length; i += perView) {
+    groups.push(websites.slice(i, i + perView));
+  }
+
+  const transitionStyle: React.CSSProperties = { transitionDuration: `${settings.duration}s` };
 
   return (
     <section id="portfolio-websites" className="py-20 lg:py-28 bg-[#f8fafc]">
@@ -131,7 +146,7 @@ const WebsitePortfolioSlider: React.FC = () => {
             Websites We've Built
           </h2>
           <p className="mt-4 text-base text-slate-600 lg:text-lg">
-            Real sites crafted for speed, clarity, and performance.
+            Real projects — sites and apps crafted for speed, clarity, and performance.
           </p>
         </div>
 
@@ -140,72 +155,136 @@ const WebsitePortfolioSlider: React.FC = () => {
           onMouseEnter={() => setPaused(true)}
           onMouseLeave={() => setPaused(false)}
         >
-          <Carousel
-            setApi={setApi}
-            opts={{
-              align: 'start',
-              loop: true,
-              slidesToScroll: 1,
-            }}
-            className="w-full"
-          >
-            <div className="relative group">
-              <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-14 bg-gradient-to-r from-[#f8fafc] to-transparent" />
-              <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-14 bg-gradient-to-l from-[#f8fafc] to-transparent" />
-
-              <CarouselContent className="-ml-3 md:-ml-4">
-                {websites.map((website) => (
-                  <CarouselItem
-                    key={website.id}
-                    className="pl-3 md:pl-4 basis-full sm:basis-1/2 lg:basis-1/3 xl:basis-1/5"
-                  >
-                    <a
-                      href={website.url || '#'}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="group relative block h-full overflow-hidden rounded-[28px] border border-slate-200 bg-slate-100 shadow-[0_20px_60px_-30px_rgba(26,31,58,0.45)] transition-all duration-300 hover:-translate-y-1 hover:scale-[1.01] hover:shadow-[0_30px_70px_-28px_rgba(26,31,58,0.55)]"
+          <div className="relative group">
+            <div
+              className={`relative w-full overflow-hidden rounded-2xl bg-slate-200 aspect-[4/3] sm:aspect-[16/9] ${
+                settings.effect === 'fade' ? '' : 'ring-1 ring-slate-200'
+              }`}
+            >
+              {settings.effect === 'fade' ? (
+                <div className="relative h-full w-full">
+                  {groups.map((group, gi) => (
+                    <div
+                      key={gi}
+                      className={`absolute inset-0 flex transition-opacity ${
+                        gi === currentPage ? 'opacity-100' : 'opacity-0 pointer-events-none'
+                      }`}
+                      style={transitionStyle}
                     >
-                      <div className="aspect-[4/3] w-full">
-                        {website.image_url ? (
-                          <img
-                            src={website.image_url}
-                            alt={website.title}
-                            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                          />
-                        ) : (
-                          <div
-                            className={`h-full w-full bg-gradient-to-br ${getPreviewPalette(website.title)}`}
-                          >
-                            <div className="flex h-full items-center justify-center">
-                              <span className="text-5xl font-black tracking-tight text-white/90">
-                                {getInitials(website.title)}
-                              </span>
-                            </div>
-                          </div>
-                        )}
-                      </div>
-
-                      <div className="absolute inset-0 bg-slate-950/0 transition-colors duration-300 group-hover:bg-slate-950/40" />
-
-                      <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                        <span className="flex items-center justify-center rounded-full bg-white text-[#1a1f3a] shadow-lg">
-                          <ExternalLink size={22} className="m-3.5" />
-                        </span>
-                      </div>
-                    </a>
-                  </CarouselItem>
-                ))}
-              </CarouselContent>
-
-              <div className="mt-7 flex items-center justify-end gap-3">
-                <CarouselPrevious className="static h-11 w-11 -translate-y-0 rounded-full border-0 bg-[#1a1f3a] text-white shadow-sm hover:bg-[#2d365d]" />
-                <CarouselNext className="static h-11 w-11 translate-y-0 rounded-full border-0 bg-[#4a90e2] text-white shadow-sm hover:bg-[#3a7bc8]" />
-              </div>
+                      {group.map((website) => (
+                        <SlideCard key={website.id} website={website} />
+                      ))}
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div
+                  className={`flex h-full transition-transform ease-in-out ${
+                    settings.effect === 'coverflow' ? 'items-center' : ''
+                  }`}
+                  style={{
+                    transform: `translateX(-${currentPage * 100}%)`,
+                    ...transitionStyle,
+                  }}
+                >
+                  {groups.map((group, gi) => (
+                    <div
+                      key={gi}
+                      className={`flex h-full min-w-0 shrink-0 grow-0 basis-full transition-all ${
+                        settings.effect === 'coverflow' && gi !== currentPage
+                          ? 'scale-[0.95] opacity-80'
+                          : ''
+                      }`}
+                      style={settings.effect === 'coverflow' ? transitionStyle : undefined}
+                    >
+                      {group.map((website) => (
+                        <SlideCard key={website.id} website={website} />
+                      ))}
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
-          </Carousel>
+
+            {pages > 1 && (
+              <>
+                <button
+                  onClick={goPrev}
+                  aria-label="Previous"
+                  className="absolute left-3 top-1/2 -translate-y-1/2 z-10 bg-white/85 hover:bg-white rounded-full p-2.5 shadow-md transition-colors"
+                >
+                  <ChevronLeft size={20} className="text-[#1a1f3a]" />
+                </button>
+                <button
+                  onClick={goNext}
+                  aria-label="Next"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 z-10 bg-white/85 hover:bg-white rounded-full p-2.5 shadow-md transition-colors"
+                >
+                  <ChevronRight size={20} className="text-[#1a1f3a]" />
+                </button>
+              </>
+            )}
+          </div>
+
+          {pages > 1 && (
+            <div className="flex justify-center gap-2 mt-5">
+              {groups.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => setPage(i)}
+                  aria-label={`Go to slide ${i + 1}`}
+                  className={`h-2.5 rounded-full transition-all ${
+                    i === currentPage ? 'w-7 bg-[#1a1f3a]' : 'w-2.5 bg-slate-300 hover:bg-slate-400'
+                  }`}
+                />
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </section>
+  );
+};
+
+const SlideCard: React.FC<{ website: Website }> = ({ website }) => {
+  const image = website.image_url ? (
+    <img
+      src={website.image_url}
+      alt={website.title}
+      loading="lazy"
+      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+    />
+  ) : (
+    <div className={`h-full w-full bg-gradient-to-br ${getPreviewPalette(website.title)}`}>
+      <div className="flex h-full items-center justify-center">
+        <span className="text-5xl font-black tracking-tight text-white/90">
+          {getInitials(website.title)}
+        </span>
+      </div>
+    </div>
+  );
+
+  if (!website.url) {
+    return (
+      <div className="group relative h-full min-w-0 flex-1 overflow-hidden">{image}</div>
+    );
+  }
+
+  return (
+    <a
+      href={website.url}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="group relative h-full min-w-0 flex-1 overflow-hidden"
+    >
+      {image}
+      <div className="absolute inset-0 bg-slate-950/0 transition-colors duration-300 group-hover:bg-slate-950/40" />
+      <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+        <span className="flex items-center justify-center rounded-full bg-white text-[#1a1f3a] shadow-lg">
+          <ExternalLink size={22} className="m-3.5" />
+        </span>
+      </div>
+    </a>
   );
 };
 
